@@ -1,0 +1,625 @@
+{
+  "_meta": {
+    "version": "3.0",
+    "source": "bloodworkguide-3.docx",
+    "route_ids": ["labcorp_inhouse","labcorp_eurofins","hospital_arup","hospital_arup_panlabs","hospital_mayo","hospital_eurofins","igenex","interscience"],
+    "script_grouping": {
+      "labcorp_script": ["labcorp_inhouse","labcorp_eurofins"],
+      "hospital_script": ["hospital_arup","hospital_arup_panlabs","hospital_mayo","hospital_eurofins","igenex","interscience"]
+    },
+    "valid_order_requirements": {
+      "physician": ["Full name","NPI number","Practice name + address","Phone + fax","Handwritten signature","Date signed","LabCorp account # (LabCorp orders only)"],
+      "patient": ["Full legal name","Date of birth","Sex","Address + phone"],
+      "signature_note": "Handwritten wet-ink signature required."
+    }
+  },
+  "sections": [
+    {
+      "id": "viral_testing",
+      "name": "Viral Testing",
+      "description": "People with ME may have an onset due to COVID, EBV, Lyme, or Coxsackie infection, but these are often only the first domino to fall before additional viruses reactivate due to a weakened immune system. RNA-viruses in healthy individuals have IgG titres that drop after infection resolves — persistently high titres indicate ongoing infection. DNA-viruses behave differently, with IgG persisting at lower levels even in healthy patients, making significantly elevated titres the more meaningful threshold.",
+      "categories": [
+        {
+          "id": "ebv",
+          "name": "Epstein-Barr Virus (EBV)",
+          "description": null,
+          "tests": [
+            {
+              "id": "ebv_pcr",
+              "name": "EBV Quantitative PCR",
+              "sny": null,
+              "description": "Quantitative preferred over qualitative — what matters is presence at all. Quantitative testing better at detecting low-level reactivation.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Epstein-Barr Virus (EBV), Quantitative PCR\nCPT: 87799\nLabCorp Code: 138230" }
+              ]
+            },
+            {
+              "id": "ebv_ab_profile",
+              "name": "EBV Antibody Profile",
+              "sny": null,
+              "description": "Comprehensive EBV antibody panel.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "EBV Antibody Profile\nLabCorp Code: 240610" }
+              ]
+            },
+            {
+              "id": "ebv_ea_igg",
+              "name": "EBV Early Antigen IgG",
+              "sny": null,
+              "description": "EBV Early Antigen IgG — elevated early antigen is associated with active or recent EBV replication.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "EBV Early Antigen IgG, Serum\nLabCorp Code: 096248" }
+              ]
+            },
+            {
+              "id": "ebv_insight",
+              "name": "EBV inSIGHT T Cell Immunity Testing",
+              "sny": true,
+              "description": "Measures stimulated ATP response to EBV antigen-specific stimulation in CD4 & CD8 T cells.",
+              "routes": [
+                { "id": "hospital_eurofins", "label": "Hospital \u2192 Eurofins (direct)", "order": "EBV inSIGHT T Cell Immunity Testing\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 33217\nCPT: 86352 x4\nInstructions: Collect 10 mL whole blood in sodium heparin tube (min 7.5 mL). Draw Mon\u2013Fri after 7:00 AM CST, ship same day priority overnight ambient. DO NOT SHIP if holiday within 2 days." }
+              ]
+            },
+            {
+              "id": "ebv_naat",
+              "name": "EBV by Quantitative NAAT, Plasma",
+              "sny": true,
+              "description": "Quantitative NAAT for EBV in plasma. Detects presence at any level — better than qualitative for low-level reactivation.",
+              "routes": [
+                { "id": "hospital_arup", "label": "Hospital \u2192 ARUP", "order": "SEND TO ARUP: EBV Quant NAAT, Plasma (3006079)\nCPT: 87799\nInstructions: Use Lavender (EDTA), Pink (K2EDTA), or PPT. Separate within 24 hours. Transfer 2 mL plasma to ARUP standard transport tube. Freeze immediately and send frozen." }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hhv6",
+          "name": "HHV-6",
+          "description": null,
+          "tests": [
+            {
+              "id": "hhv6_ifa",
+              "name": "HHV-6 IgG, IFA",
+              "sny": true,
+              "description": "MUST be an IFA for IgG. 1:80 or greater potentially indicative of HHV-6 reactivation; 1:160, 1:320+ most indicative. In a 1996 study, 89% of CFS patients with titers \u22651:320 had active infections confirmed by culture.",
+              "routes": [
+                { "id": "hospital_arup", "label": "Hospital \u2192 ARUP", "order": "SEND TO ARUP: HHV-6 IFA (2013423)\nCPT: 86790\nInstructions: Use SST or Plain Red. Transfer 0.5 mL serum to ARUP standard transport tube (Min: 0.1 mL). Refrigerate upon draw and send refrigerated." }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cmv",
+          "name": "Cytomegalovirus (CMV)",
+          "description": "No commercial test can fully distinguish abortive reactivated CMV from latent infection. However, a negative CMV IgG can fully rule out abortive CMV infection entirely.",
+          "tests": [
+            {
+              "id": "cmv_igg",
+              "name": "CMV IgG",
+              "sny": true,
+              "description": "CMV IgG antibody. A negative result fully rules out abortive CMV reactivation. A positive alone is not sufficient to confirm active reactivation.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Cytomegalovirus IgG, Serum\nLabCorp Code: 006494" }
+              ]
+            },
+            {
+              "id": "cmv_igm",
+              "name": "CMV IgM",
+              "sny": true,
+              "description": "CMV IgM antibody — may indicate recent or active reactivation.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Cytomegalovirus IgM, Serum\nLabCorp Code: 096727" }
+              ]
+            },
+            {
+              "id": "cmv_cd8_mayo",
+              "name": "CMV CD8 T-Cell Immune Competence",
+              "sny": false,
+              "description": "Quantitative assessment of CMV-specific CD8 T cell immune competence. HLA Class 1 subtyping is a prerequisite and a special form must accompany the specimen.",
+              "routes": [
+                { "id": "hospital_mayo", "label": "Hospital \u2192 Mayo", "order": "CMV CD8 T-Cell Immune Competence, Quantitative Assessment by Flow Cytometry, Blood\nCPT: 86356 x6; 86369; 86352 | Mayo Code: CMVC8 | Not SNY Approved\nSPECIAL: HLA Class 1 subtyping is a prerequisite. Special form must accompany test.\nInstructions: Green top (sodium heparin), collect 20 mL whole blood. Send in original tube \u2014 do not aliquot." }
+              ]
+            },
+            {
+              "id": "cmv_insight",
+              "name": "CMV inSIGHT T Cell Immunity Testing",
+              "sny": true,
+              "description": "Measures stimulated ATP response to CMV antigen-specific stimulation in CD4 & CD8 T cells.",
+              "routes": [
+                { "id": "hospital_eurofins", "label": "Hospital \u2192 Eurofins (direct)", "order": "CMV inSIGHT T Cell Immunity Testing\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 30360\nCPT: 86352 x4\nInstructions: Collect 6 mL whole blood in sodium heparin tube (min 4.5 mL). Draw Mon\u2013Fri after 7:00 AM CST. Ship priority overnight ambient same day. DO NOT SHIP if holiday within 2 days." }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hsv",
+          "name": "HSV 1 & 2",
+          "description": null,
+          "tests": [
+            {
+              "id": "hsv_pcr",
+              "name": "HSV 1 & 2 DNA PCR",
+              "sny": null,
+              "description": "PCR-based detection of HSV-1 and HSV-2 DNA.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "HSV 1 & 2 DNA PCR\nLabCorp Code: 138651" }
+              ]
+            },
+            {
+              "id": "hsv_igg",
+              "name": "HSV 1 & 2 IgG",
+              "sny": null,
+              "description": "Serum IgG antibody testing for HSV-1 and HSV-2. As a DNA virus, IgG persists at low levels long after initial infection — significantly elevated titres are the more clinically meaningful threshold.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "HSV 1 & 2 Specific Antibodies, IgG\nLabCorp Code: 164099" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vzv",
+          "name": "Varicella Zoster Virus (VZV)",
+          "description": null,
+          "tests": [
+            {
+              "id": "vzv_pcr",
+              "name": "VZV DNA PCR",
+              "sny": null,
+              "description": "PCR-based detection of VZV DNA.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "VZV DNA PCR\nLabCorp Code: 138313" }
+              ]
+            },
+            {
+              "id": "vzv_igg",
+              "name": "VZV IgG",
+              "sny": null,
+              "description": "IgG antibody testing for VZV. As a DNA virus, IgG persists at low levels long after initial infection — significantly elevated titres may indicate reactivation.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "VZV IgG\nLabCorp Code: 096206" }
+              ]
+            },
+            {
+              "id": "vzv_igm",
+              "name": "VZV IgM, Qualitative",
+              "sny": null,
+              "description": "IgM antibody testing for VZV — may indicate recent or active reactivation.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "VZV IgM, Qualitative\nLabCorp Code: 096776" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "enteroviruses",
+          "name": "Enteroviruses / Coxsackieviruses",
+          "description": "Enteroviruses are one of the primary RNA-virus families contributing to ME. There are over 100 different enteroviruses, so testing for specific serotypes is important.",
+          "tests": [
+            {
+              "id": "coxsackie_a",
+              "name": "Coxsackie A Antibodies",
+              "sny": null,
+              "description": "Antibody testing for Coxsackie A serotypes.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Coxsackie A Antibodies, Serum\nLabCorp Code: 163295" }
+              ]
+            },
+            {
+              "id": "coxsackie_b_neut",
+              "name": "Coxsackie B Antibodies, Neutralization",
+              "sny": true,
+              "description": "Tests for Coxsackieviruses B1\u2013B6. MUST be a neutralization assay. 1:160 or greater indicative of persistent infection. Inclusive but not exclusive \u2014 can test negative yet still positive on biopsy. Persistently high titres ~6 months apart is strong confirmation.",
+              "routes": [
+                { "id": "hospital_arup", "label": "Hospital \u2192 ARUP", "order": "SEND TO ARUP: Coxsackie Neutralization (0060055)\nCPT: 86658 x6\nInstructions: Use SST or Plain Red. Separate ASAP or within 2 hours. Transfer 1 mL serum to ARUP Standard Transport Tube (Min: 0.3 mL). Refrigerate upon draw and send refrigerated." }
+              ]
+            },
+            {
+              "id": "echovirus_neut",
+              "name": "Echovirus Antibodies, Neutralization",
+              "sny": true,
+              "description": "Tests for Echoviruses 6, 7, 9, 11, & 30. MUST be a neutralization assay. 1:160 or greater indicative of persistent infection. Inclusive but not exclusive.",
+              "routes": [
+                { "id": "hospital_arup", "label": "Hospital \u2192 ARUP", "order": "SEND TO ARUP: Echovirus Neutralization (0060053)\nCPT: 86658 x5\nInstructions: Use SST or Plain Red. Separate ASAP or within 2 hours. Transfer 1 mL serum to ARUP Standard Transport Tube. Refrigerate upon draw and send refrigerated." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nk_cell_testing",
+      "name": "NK Cell Testing",
+      "description": "In ME/CFS, NK cells are often present in normal numbers but can be functionally impaired \u2014 unable to kill viruses and other threats effectively.",
+      "categories": [
+        {
+          "id": "nk_cell_testing",
+          "name": "NK Cell Testing",
+          "description": null,
+          "tests": [
+            {
+              "id": "nk_cd56",
+              "name": "NK Cell CD56+/CD3-",
+              "sny": null,
+              "description": "Typical NK cell count test. Can be lower after onset, sometimes very low. Least specific NK cell test.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "NK Cell CD56+/CD3-\nCPT: 86357\nLabCorp Code: 505016" }
+              ]
+            },
+            {
+              "id": "nk_function",
+              "name": "NK Cell Function, %",
+              "sny": true,
+              "description": "Most holistic / best overall marker to see how your NK cells are doing. May be normal in earlier years of illness, but gradually decreases over time.",
+              "routes": [
+                { "id": "labcorp_eurofins", "label": "LabCorp \u2192 Eurofins", "order": "NK Cell Function Assay STAT\nCPT: 88184; 88185 | LabCorp Code: 807502\nSend Out to 30035 @ Eurofins Viracor \u2014 MUST BE REFRIGERATED\nInstructions: Collect 20 mL whole blood in 2\u00d710 mL ACD tubes. Draw Mon\u2013Thu 11:00 AM\u20135:00 PM CT only. Ship same day priority overnight with cold packs." }
+              ]
+            },
+            {
+              "id": "nk_cd57",
+              "name": "NK Cell CD57+/CD3-",
+              "sny": false,
+              "description": "CD57+/CD3- NK cells are highly mature, differentiated, and cytotoxic. Decreased counts indicate increased susceptibility to persistent infections. Potential indicator of chronic Lyme infection.",
+              "routes": [
+                { "id": "hospital_arup", "label": "Hospital \u2192 ARUP", "order": "SEND TO ARUP: NK Cell CD57 (2008912)\nCPT: 86356 x2 | Not SNY Approved\nInstructions: Use Lavender (EDTA), Pink (K2EDTA), or Green (sodium or lithium heparin). Collect 4 mL whole blood (Min: 0.5 mL). Analyze within 72 hours. Specimen acceptable ambient or refrigerated." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "t_cell_testing",
+      "name": "T Cell Testing",
+      "description": "T cell abnormalities can reveal chronic immune activation, where the immune system is stuck in an \u201calways on\u201d state without actually resolving anything.",
+      "categories": [
+        {
+          "id": "t_cell_testing",
+          "name": "T Cell Testing",
+          "description": null,
+          "tests": [
+            {
+              "id": "t_cd8_activation",
+              "name": "T Cell Activation Profile, CD8 Subsets",
+              "sny": null,
+              "description": "HLA-DR CD8 T cells are meant to proliferate in response to active infections. The LabCorp range presents zero out-of-range results \u2014 a count <25/\u00b5L and %<1 is a cause for concern, especially alongside elevated viral titres.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "T Cell Activation Profile, CD8 Subsets\nCPT: 86356 x3; 86359; 86360\nLabCorp Code: 505750" }
+              ]
+            },
+            {
+              "id": "immuknow",
+              "name": "ImmuKnow",
+              "sny": null,
+              "description": "Measures stimulated ATP response to antigen stimulation in CD4 T cells. A very high result (>450 ng/mL) concurrent with positive persistent virus tests is indicative of an overactivated-yet-ineffective immune response.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "ImmuKnow\nCPT: 86352\nLabCorp Code: 176120" }
+              ]
+            },
+            {
+              "id": "t_cell_fx",
+              "name": "T Cell Fx Complete",
+              "sny": true,
+              "description": "Stimulated T cell test critical for determining your specific stage of immune exhaustion.",
+              "routes": [
+                { "id": "labcorp_eurofins", "label": "LabCorp \u2192 Eurofins", "order": "T Cell Fx Complete\nCPT: 86353 x4 | LabCorp Code: 831367 | Send Out to 403066P @ Eurofins Viracor\nInstructions: Collect 8 mL whole blood in sodium heparin vacutainer. DO NOT USE lithium heparin, ACD, or EDTA. Collect 12:00 PM\u20135:00 PM CT, Mon\u2013Thu ONLY. Ship priority overnight ambient. Must arrive within 24 hours. DO NOT SHIP if holiday follows." }
+              ]
+            },
+            {
+              "id": "t_phenotyping",
+              "name": "T Cell Phenotyping, Advanced",
+              "sny": false,
+              "description": "Very specific T cell subset test providing a detailed breakdown of T cell subpopulations.",
+              "routes": [
+                { "id": "hospital_mayo", "label": "Hospital \u2192 Mayo", "order": "T Cell Phenotyping, Advanced\nCPT: 86356 x7 | Mayo Code: TCP | Not SNY Approved\nInstructions: Use Lavender top (EDTA), collect 3 mL whole blood. Send whole blood in original tube \u2014 do not aliquot. Ship ambient." }
+              ]
+            },
+            {
+              "id": "reg_t_foxp3",
+              "name": "Regulatory T Cell Panel, FOXP3",
+              "sny": true,
+              "description": "Direct measurement of CD4+CD25+FoxP3+CD127- regulatory T cells (Tregs). Elevated numbers play a role in continued immune suppression, found in more immune-exhausted states.",
+              "routes": [
+                { "id": "hospital_arup", "label": "Hospital \u2192 ARUP", "order": "SEND TO ARUP: Regulatory T Cell Panel (3002249)\nCPT: 86356 x4\nInstructions: Use Lavender (K2EDTA) or Pink (K2EDTA). Transport 4 mL whole blood (Min: 1 mL). Analyze within 48 hours. Refrigerate and send refrigerated." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "protozoan_testing",
+      "name": "Protozoan Testing",
+      "description": "Babesia, Bartonella, and Borrelia fall into the same diagnostic category as RNA-viruses \u2014 meant to be fully cleared after infection, rather than persisting in latency. Typical Lyme tests like Western Blot are not sufficient for a conclusive result. The tests here via IgeneX are the most reliable options accessible in the USA.",
+      "categories": [
+        {
+          "id": "protozoan_testing",
+          "name": "Protozoan Testing",
+          "description": null,
+          "tests": [
+            {
+              "id": "babesia_fish",
+              "name": "Babesia FISH",
+              "sny": null,
+              "description": "Looks for ribosomal RNA (evidence of active replication) directly in blood. Far more accurate than standard PCRs for active Babesia infection.",
+              "routes": [
+                { "id": "igenex", "label": "IgeneX (direct)", "order": "IgeneX \u2014 Babesia Fluorescent In Situ Hybridization Assay (FISH)\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit." }
+              ]
+            },
+            {
+              "id": "bartonella_fish",
+              "name": "Bartonella FISH",
+              "sny": null,
+              "description": "Looks for ribosomal RNA (evidence of active replication) directly in blood. Far more accurate than standard PCRs for active Bartonella infection.",
+              "routes": [
+                { "id": "igenex", "label": "IgeneX (direct)", "order": "IgeneX \u2014 Bartonella Fluorescent In Situ Hybridization Assay (FISH)\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit." }
+              ]
+            },
+            {
+              "id": "borrelia_elispot",
+              "name": "Borrelia Burgdorferi ELISpot",
+              "sny": null,
+              "description": "Measures T cell IFN-gamma response to Borrelia antigens. Reactivity dies off quickly once antigen is cleared \u2014 a positive result indicates persistent antigen.",
+              "routes": [
+                { "id": "igenex", "label": "IgeneX (direct)", "order": "IgeneX \u2014 Borrelia Burgdorferi ELISpot\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit." }
+              ]
+            },
+            {
+              "id": "lyme_culture_pcr",
+              "name": "IgeneX Culture-Enhanced PCR",
+              "sny": null,
+              "description": "Comprehensive Lyme panel covering Borrelia, Babesia, Bartonella, and Anaplasma species.",
+              "routes": [
+                { "id": "igenex", "label": "IgeneX (direct)", "order": "IgeneX \u2014 Culture-Enhanced PCR (Comprehensive Lyme)\nTests: Borrelia burgdorferi/garinii/mayonii/miyatomoi; Babesia microti/duncani/sp.; Bartonella henselae/elizabethae/tribocorum; Anaplasma phagocytophilum/platys.\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cytokine_testing",
+      "name": "Cytokine Testing",
+      "description": "US-based cytokine testing is the most limited area. The gold standard \u2014 stimulated cytokine tests where cells are exposed to antigen and the response is measured \u2014 is only available in Germany. US tests measure unstimulated cytokine quantities in whole blood. Out-of-range values are definitively meaningful, but a normal result does not rule out dysregulation.",
+      "categories": [
+        {
+          "id": "cytokine_testing",
+          "name": "Cytokine Testing",
+          "description": null,
+          "tests": [
+            {
+              "id": "cytokine13_arup",
+              "name": "Cytokine Panel 13, Serum",
+              "sny": true,
+              "description": "Unstimulated whole-blood cytokine panel (sIL-2R, IL-12, IFN-\u03b3, IL-4, IL-5, IL-10, IL-13, IL-1\u03b2, IL-6, IL-8, TNF-\u03b1, IL-2, IL-17). Out-of-range values are definitively meaningful. Inclusive but not exclusive \u2014 normal does not rule out dysregulation.",
+              "routes": [
+                { "id": "hospital_arup", "label": "Hospital \u2192 ARUP", "order": "SEND TO ARUP: Cytokine Panel 13 (0051394)\nCPT: 83520 x12; 83529\nIncludes: sIL-2R, IL-12, IFN-gamma, IL-4, IL-5, IL-10, IL-13, IL-1beta, IL-6, IL-8, TNF-alpha, IL-2, IL-17\nInstructions: Use SST or Plain Red. Separate serum ASAP or within 2 hours. Transfer 1 mL serum to ARUP Standard Transport Tube. CRITICAL FROZEN." }
+              ]
+            },
+            {
+              "id": "cytokine_plasma_mayo",
+              "name": "Cytokine Panel, Plasma",
+              "sny": true,
+              "description": "Plasma-based unstimulated cytokine panel via Mayo Clinic Labs.",
+              "routes": [
+                { "id": "hospital_mayo", "label": "Hospital \u2192 Mayo", "order": "Cytokine Panel, Plasma\nMayo Code: CYPAN | CPT: 83520 x10; 83529\nContainer: Lavender-top (EDTA) | Volume: 0.5 mL Plasma\nInstructions: 1. Place tube on wet ice immediately. 2. Centrifuge at 4\u00b0C, 1500\u00d7g for 10 min. 3. Aliquot plasma into plastic vial. 4. Freeze within 2 hours of collection." }
+              ]
+            },
+            {
+              "id": "pro_inflammatory",
+              "name": "Pro-Inflammatory Panel",
+              "sny": true,
+              "description": "Eurofins-Viracor pro-inflammatory cytokine panel (plasma).",
+              "routes": [
+                { "id": "hospital_eurofins", "label": "Hospital \u2192 Eurofins (direct)", "order": "Pro-Inflammatory Panel, Plasma\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 403028P\nCPT: 83520 x3; 83529\nInstructions: Collect 4\u20135 mL whole blood in EDTA or ACD tube. Centrifuge and transfer 2 mL plasma to transfer tube. Freeze and ship on dry ice Mon\u2013Fri. Must arrive within 96 hours of collection." }
+              ]
+            },
+            {
+              "id": "th1_th2",
+              "name": "Th1/Th2 Panel",
+              "sny": true,
+              "description": "Eurofins-Viracor Th1/Th2 cytokine panel (plasma).",
+              "routes": [
+                { "id": "hospital_eurofins", "label": "Hospital \u2192 Eurofins (direct)", "order": "Th1 / Th2 Panel, Plasma\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 403026P\nCPT: 83520 x7\nInstructions: Collect 1 mL EDTA plasma. Ship frozen on dry ice overnight." }
+              ]
+            },
+            {
+              "id": "soluble_tnf_r1",
+              "name": "Soluble TNF Receptor 1",
+              "sny": null,
+              "description": "Soluble TNF Receptor 1 (plasma) via Eurofins-Viracor.",
+              "routes": [
+                { "id": "hospital_eurofins", "label": "Hospital \u2192 Eurofins (direct)", "order": "Soluble TNF Receptor 1, Plasma\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 30145\nInstructions: Collect whole blood in sodium heparin tube. Separate plasma by centrifugation within 30 min of draw. Transfer 1 mL plasma to sterile tube and freeze immediately." }
+              ]
+            },
+            {
+              "id": "soluble_il2_r",
+              "name": "Soluble IL-2 Receptor",
+              "sny": null,
+              "description": "Soluble IL-2 Receptor (serum) via Eurofins-Viracor.",
+              "routes": [
+                { "id": "hospital_eurofins", "label": "Hospital \u2192 Eurofins (direct)", "order": "Soluble IL-2 Receptor, Serum\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 30057\nInstructions: Collect 1 mL blood, allow to clot prior to centrifugation. Freeze specimen. Ship overnight on dry ice. Not stable ambient or refrigerated." }
+              ]
+            },
+            {
+              "id": "tlr_function",
+              "name": "Toll-Like Receptor Function",
+              "sny": true,
+              "description": "Measures pre- and post-stimulation values for IL-1beta, IL-6, and TNF-alpha upon exposure to PAM3CSK4, Zymosan, Flagellin, CL097, and LPS. Requires a simultaneously collected matched healthy control specimen.",
+              "routes": [
+                { "id": "hospital_arup", "label": "Hospital \u2192 ARUP", "order": "SEND TO ARUP: Toll-Like Receptor Function (0051589)\nCPT: 86353 x5; 83520 x2; 83529\nSPECIAL: Collect control specimen from healthy individual unrelated to patient at same time under similar conditions.\nInstructions: Collect Green (sodium heparin) for BOTH patient AND control. 10 mL whole blood each (Min: 7 mL each). Must arrive within 48 hrs (24 hrs for NY). DO NOT refrigerate or freeze. LIVE CELLS REQUIRED." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "signaling_molecules",
+      "name": "Signaling Molecules",
+      "description": "In addition to cytokines, there are other signaling molecules that may be abnormal in ME/CFS.",
+      "categories": [
+        {
+          "id": "signaling_molecules",
+          "name": "Signaling Molecules",
+          "description": null,
+          "tests": [
+            {
+              "id": "mmp9",
+              "name": "MMP9",
+              "sny": null,
+              "description": "Non-specific marker of inflammation correlated with vascular remodeling and weak connective tissue. Per Dr. Shoemaker\u2019s range, 85\u2013332 ng/mL is considered normal; above is elevated.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "MMP9\nCPT: 83520\nLabCorp Code: 500124" }
+              ]
+            },
+            {
+              "id": "vegf",
+              "name": "VEGF",
+              "sny": null,
+              "description": "Vascular Endothelial Growth Factor \u2014 marker of endothelial dysfunction. Per Dr. Shoemaker\u2019s range, 31\u201386 pg/mL is considered normal; above is elevated.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Vascular Endothelial Growth Factor (VEGF)\nLabCorp Code: TBD \u2014 confirm with LabCorp before ordering" }
+              ]
+            },
+            {
+              "id": "pge2",
+              "name": "Prostaglandin E2 (PGE2)",
+              "sny": null,
+              "description": "Elevated PGE2 indicates immune exhaustion \u2014 has immunosuppressive properties and decreases ability to handle infections. Per Dr. Shoemaker\u2019s range, 200\u2013400 pg/mL is normal; above is elevated.",
+              "routes": [
+                { "id": "hospital_arup_panlabs", "label": "Hospital \u2192 ARUP \u2192 Pan Labs", "order": "Prostaglandin E2 \u2014 Send out to ARUP FROZEN\nFOR ARUP: Send to Pan Labs, PGE2 Code 106\nInstructions: Collect 3 mL blood in Purple/Lavender (EDTA) tube. Freeze immediately after collection." },
+                { "id": "interscience", "label": "InterScience Institute (direct)", "order": "Prostaglandin E2, Serum/Plasma\nInterScience Institute \u2014 Code: PGE2 \u2014 Send to InterScience FROZEN\nInstructions: Collect 3 mL serum or EDTA plasma. Separate ASAP. Freeze immediately. Minimum specimen: 1 mL." }
+              ]
+            },
+            {
+              "id": "vip",
+              "name": "Vasoactive Intestinal Peptide (VIP)",
+              "sny": false,
+              "description": "Also known as vasoactive intestinal polypeptide. A neuropeptide with roles in immune regulation and circadian rhythm.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Vasoactive Intestinal Polypeptide (VIP), Plasma\nCPT: 84586\nLabCorp Code: 010397\nNot SNY Approved" }
+              ]
+            },
+            {
+              "id": "c3a",
+              "name": "Complement C3a, Plasma, Frozen",
+              "sny": null,
+              "description": "Complement activation fragment associated with innate immune dysregulation. Elevated C3a is a feature of complement overactivation seen in ME/CFS.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Complement C3a, Plasma, Frozen\nCPT: 86160\nLabCorp Code: 004220" }
+              ]
+            },
+            {
+              "id": "c4a",
+              "name": "Complement C4a, Plasma, Frozen",
+              "sny": null,
+              "description": "Complement activation fragment. Elevated C4a is a particularly sensitive marker of ongoing immune activation.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Complement C4a, Plasma, Frozen\nCPT: 86160\nLabCorp Code: 04330" }
+              ]
+            },
+            {
+              "id": "sc5b9",
+              "name": "Soluble C5b-9 (SC5b-9), Plasma",
+              "sny": true,
+              "description": "Terminal complement complex \u2014 a marker of complement pathway activation. Elevated levels indicate ongoing complement-mediated tissue injury.",
+              "routes": [
+                { "id": "hospital_arup", "label": "Hospital \u2192 ARUP", "order": "SEND TO ARUP: SC5b-9 (3017902)\nCPT: 86160\nInstructions: Use Pink (K2EDTA), Tan (K2EDTA), Royal Blue (K2EDTA), or Lavender (EDTA). Separate plasma within 2 hours (1 hour preferable) by centrifugation. Transfer min 0.5 mL plasma to ARUP standard transport tube. Freeze immediately and send frozen." }
+              ]
+            },
+            {
+              "id": "neopterin",
+              "name": "Neopterin, Serum",
+              "sny": null,
+              "description": "Produced by macrophages upon IFN-gamma stimulation. Elevated neopterin is a marker of active cell-mediated immune activation.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Neopterin, Serum\nCPT: 83520\nLabCorp Code: 140335" }
+              ]
+            },
+            {
+              "id": "calprotectin",
+              "name": "Calprotectin, Fecal",
+              "sny": null,
+              "description": "Marker of intestinal inflammation. Elevated fecal calprotectin indicates gut mucosal immune activation consistent with gut dysfunction frequently observed in ME/CFS.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Calprotectin, Fecal\nCPT: 83993\nLabCorp Code: 123255" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "autoantibody_testing",
+      "name": "Autoantibody Testing",
+      "description": "US-based autoantibody testing is inferior to European options. Functional autoantibody testing is best for a proper profile \u2014 for comprehensive profiling, Amatica testing is recommended.",
+      "categories": [
+        {
+          "id": "autoantibody_testing",
+          "name": "Autoantibody Testing",
+          "description": null,
+          "tests": [
+            {
+              "id": "anticardiolipin",
+              "name": "Anti-Cardiolipin Antibodies",
+              "sny": null,
+              "description": "Anti-cardiolipin antibodies \u2014 presence may indicate an autoimmune component.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Anti-Cardiolipin Antibodies\nLabCorp In-house \u2014 confirm specific panel code with LabCorp before ordering" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "methylation_testing",
+      "name": "Methylation Testing",
+      "description": "Methylation is impaired in some form in practically everyone with ME/CFS. B12 and folate are hard to measure directly \u2014 the tests below measure downstream markers as the best available clinical approach.",
+      "categories": [
+        {
+          "id": "methylation_testing",
+          "name": "Methylation Testing",
+          "description": null,
+          "tests": [
+            {
+              "id": "b12_folate",
+              "name": "Vitamin B12 & Folate, Serum",
+              "sny": null,
+              "description": "High serum counts may paradoxically indicate an absorption issue (especially if MMA or homocysteine are also elevated). A low result is a definitive indicator of deficiency regardless of absorption rate.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Vitamin B12 & Folate, Serum\nCPT: 82607; 82746\nLabCorp Code: 000810" }
+              ]
+            },
+            {
+              "id": "homocysteine",
+              "name": "Homocysteine, Serum",
+              "sny": null,
+              "description": "General indicator of methylation cycle dysfunction and potentially both B12 and folate deficiencies. Elevated homocysteine is a sensitive upstream marker of methylation impairment.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Homocysteine, Serum\nCPT: 83090\nLabCorp Code: 706994" }
+              ]
+            },
+            {
+              "id": "mma_urine",
+              "name": "Methylmalonic Acid (MMA), Urine",
+              "sny": null,
+              "description": "Specific indicator of vitamin B12 deficiency. Must be adjusted for creatinine: MMA (\u00b5mol/L) / (Creatinine g/L). Can also be elevated with impaired renal function.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Methylmalonic Acid (MMA), Urine\nCPT: 83921\nLabCorp Code: 716365" }
+              ]
+            },
+            {
+              "id": "mma_serum",
+              "name": "Methylmalonic Acid (MMA), Serum",
+              "sny": null,
+              "description": "Specific indicator of vitamin B12 deficiency. If elevated in serum, highly indicative of a true deficiency. Best combined with urine MMA for the full picture.",
+              "routes": [
+                { "id": "labcorp_inhouse", "label": "LabCorp", "order": "Methylmalonic Acid (MMA), Serum\nCPT: 83921\nLabCorp Code: 706961" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
