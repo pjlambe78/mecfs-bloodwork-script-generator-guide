@@ -6,7 +6,7 @@
 <title>ME/CFS Test Guide & Generator</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f6f8; color: #1a1a2e; font-size: 14px; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f6f8; color: #1a1a2e; font-size: 14px; zoom: 1.4; }
 
   header { background: #1a1a2e; color: #fff; padding: 18px 28px; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
   header h1 { font-size: 18px; font-weight: 600; letter-spacing: 0.3px; }
@@ -79,7 +79,7 @@
 
   /* ── Category description ── */
   .cat-desc { padding: 10px 18px 12px; border-bottom: 1px solid #f0f2f7; }
-  .cat-desc p { font-size: 12px; color: #6b7280; line-height: 1.59; margin-bottom: 6px; }
+  .cat-desc p { font-size: 12px; color: #6b7280; line-height: 1.6; margin-bottom: 6px; }
   .cat-desc p:last-child { margin-bottom: 0; }
 
   /* ── Info callouts ── */
@@ -199,7 +199,7 @@ const TESTS = [
 
   { id:'ebv_insight', name:'EBV inSIGHT T Cell Immunity Testing', section:'Viral Testing', category:'Epstein-Barr Virus (EBV)', sny:true,
     description:'Measures stimulated ATP response to antigen-specific stimulation in CD4 & CD8 T cells.',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'EBV inSIGHT T Cell Immunity Testing\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 33217\nCPT: 86352 x4\nInstructions: Collect 10 mL whole blood in sodium heparin tube (min 7.5 mL). Draw Mon\u2013Fri after 7:00 AM CST, ship same day priority overnight ambient. DO NOT SHIP if holiday within 2 days.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Send to Eurofins-Viracor \u2014 Eurofins Code: 33217\nCPT: 86352 x4\nInstructions: Collect 10 mL whole blood in sodium heparin tube (min 7.5 mL). Draw Mon\u2013Fri after 7:00 AM CST, ship same day priority overnight ambient. DO NOT SHIP if holiday within 2 days.' }] },
 
   { id:'ebv_naat', name:'EBV by Quantitative NAAT, Plasma', section:'Viral Testing', category:'Epstein-Barr Virus (EBV)', sny:true,
     description:'Quantitative NAAT for EBV in plasma. Detects presence at any level \u2014 better than qualitative for low-level reactivation.',
@@ -225,7 +225,7 @@ const TESTS = [
 
   { id:'cmv_insight', name:'CMV inSIGHT T Cell Immunity Testing', section:'Viral Testing', category:'Cytomegalovirus (CMV)', sny:true,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'CMV inSIGHT T Cell Immunity Testing\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 30360\nCPT: 86352 x4\nInstructions: Collect 6 mL whole blood in sodium heparin tube (min 4.5 mL). Draw Mon\u2013Fri after 7:00 AM CST. Ship priority overnight ambient same day. DO NOT SHIP if holiday within 2 days.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Send to Eurofins-Viracor \u2014 Eurofins Code: 30360\nCPT: 86352 x4\nInstructions: Collect 6 mL whole blood in sodium heparin tube (min 4.5 mL). Draw Mon\u2013Fri after 7:00 AM CST. Ship priority overnight ambient same day. DO NOT SHIP if holiday within 2 days.' }] },
 
   // ─── VIRAL TESTING — HSV ─────────────────────────────────────────────────
   { id:'hsv_pcr', name:'HSV 1 & 2 DNA PCR', section:'Viral Testing', category:'HSV 1 & 2', sny:null,
@@ -326,19 +326,19 @@ const TESTS = [
 
   { id:'pro_inflammatory', name:'Pro-Inflammatory Panel', section:'Cytokine Testing', category:'Cytokine Testing', sny:true,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Pro-Inflammatory Panel, Plasma\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 403028P\nCPT: 83520 x3; 83529\nInstructions: Collect 4\u20135 mL whole blood in EDTA or ACD tube. Centrifuge and transfer 2 mL plasma to transfer tube. Freeze and ship on dry ice Mon\u2013Fri. Must arrive within 96 hours of collection.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Pro-Inflammatory Panel, Plasma\nSend to Eurofins-Viracor \u2014 Eurofins Code: 403028P\nCPT: 83520 x3; 83529\nInstructions: Collect 4\u20135 mL whole blood in EDTA or ACD tube. Centrifuge and transfer 2 mL plasma to transfer tube. Freeze and ship on dry ice Mon\u2013Fri. Must arrive within 96 hours of collection.' }] },
 
   { id:'th1_th2', name:'Th1/Th2 Panel', section:'Cytokine Testing', category:'Cytokine Testing', sny:true,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Th1 / Th2 Panel, Plasma\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 403026P\nCPT: 83520 x7\nInstructions: Collect 1 mL EDTA plasma. Ship frozen on dry ice overnight.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Th1 / Th2 Panel, Plasma\nSend to Eurofins-Viracor \u2014 Eurofins Code: 403026P\nCPT: 83520 x7\nInstructions: Collect 1 mL EDTA plasma. Ship frozen on dry ice overnight.' }] },
 
   { id:'soluble_tnf_r1', name:'Soluble TNF Receptor 1', section:'Cytokine Testing', category:'Cytokine Testing', sny:null,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Soluble TNF Receptor 1, Plasma\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 30145\nInstructions: Collect whole blood in sodium heparin tube. Separate plasma by centrifugation within 30 min of draw. Transfer 1 mL plasma to sterile tube and freeze immediately.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Soluble TNF Receptor 1, Plasma\nSend to Eurofins-Viracor \u2014 Eurofins Code: 30145\nInstructions: Collect whole blood in sodium heparin tube. Separate plasma by centrifugation within 30 min of draw. Transfer 1 mL plasma to sterile tube and freeze immediately.' }] },
 
   { id:'soluble_il2_r', name:'Soluble IL-2 Receptor', section:'Cytokine Testing', category:'Cytokine Testing', sny:null,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Soluble IL-2 Receptor, Serum\nSend Directly to Eurofins-Viracor \u2014 Eurofins Code: 30057\nInstructions: Collect 1 mL blood, allow to clot prior to centrifugation. Freeze specimen. Ship overnight on dry ice. Not stable ambient or refrigerated.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Soluble IL-2 Receptor, Serum\nSend to Eurofins-Viracor \u2014 Eurofins Code: 30057\nInstructions: Collect 1 mL blood, allow to clot prior to centrifugation. Freeze specimen. Ship overnight on dry ice. Not stable ambient or refrigerated.' }] },
 
   { id:'tlr_function', name:'Toll-Like Receptor Function', section:'Cytokine Testing', category:'Cytokine Testing', sny:true,
     description:'Test with pre-stimulation & post-stimulation values for IL-1beta, IL-6, & TNF-a upon exposure to PAM3CSK4, Zymosan, Flagellin, CL097, & LPS.',
@@ -715,8 +715,8 @@ function printScript(type) {
 
     const entriesHTML = sec.entries.map((e, i) => `
       <div style="padding:12px 18px;${i < sec.entries.length - 1 ? 'border-bottom:1px solid #ececec;' : ''}">
-        <div style="font-weight:700;font-size:13px;margin-bottom:6px;">${e.name}</div>
-        <pre style="font-family:'Courier New',monospace;font-size:10.5px;line-height:1.65;color:#374151;white-space:pre-wrap;margin:0;">${e.order}</pre>
+        <div style="font-weight:700;font-size:15px;margin-bottom:6px;">${e.name}</div>
+        <pre style="font-family:'Courier New',monospace;font-size:12.5px;line-height:1.65;color:#374151;white-space:pre-wrap;margin:0;">${e.order}</pre>
       </div>`).join('');
 
     const showRouteLabel = sec.routeId !== 'labcorp_inhouse';
@@ -733,7 +733,7 @@ function printScript(type) {
 <title>Laboratory Order \u2014 ${isLC ? 'LabCorp' : 'Hospital'}</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #111; background: #fff; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #111; background: #fff; zoom: 1.4; }
   .print-bar { background: #f0f0f0; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; }
   .print-bar p { font-size: 11px; color: #555; }
   .btn-print-page { background: ${titleColor}; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
