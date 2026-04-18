@@ -70,6 +70,11 @@
   .guide-panel-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; background: #f5f0ff; border-bottom: 1px solid #e4d8fc; cursor: pointer; user-select: none; }
   .guide-panel-header h2 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #5b3ea6; }
   .guide-toggle-btn { font-size: 11px; color: #7c5cbf; font-weight: 600; white-space: nowrap; }
+  .guide-panel.teal .guide-panel-header { background: #eef6f5; border-bottom-color: #c4dedd; }
+  .guide-panel.teal .guide-panel-header h2 { color: #1a6b66; }
+  .guide-panel.teal .guide-toggle-btn { color: #2a8a84; }
+  .guide-panel.teal .guide-body { border-top-color: #c4dedd; }
+  .guide-panel.teal .guide-section h3 { color: #2a8a84; }
   .guide-body { display: none; padding: 18px; border-top: 1px solid #ede8fb; }
   .guide-body.open { display: block; }
   .guide-section { margin-bottom: 18px; }
@@ -86,7 +91,7 @@
   /* ── Info callouts ── */
   .info-callout { border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; display: flex; gap: 14px; align-items: flex-start; }
   .info-callout.red { background: #7f1d1d; border: 1.5px solid #991b1b; }
-  .info-callout.yellow { background: #78580a; border: 1.5px solid #92650a; }
+  .info-callout.yellow { background: #1e2d52; border: 1.5px solid #2a3d6e; }
   .info-callout-icon { font-size: 18px; color: rgba(255,255,255,0.8); flex-shrink: 0; line-height: 1; margin-top: 1px; }
   .info-callout-body { flex: 1; }
   .info-callout-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #fff; margin-bottom: 5px; }
@@ -436,7 +441,7 @@ const SECTION_COLORS = {
 
 const SECTION_INFO = {
   'Viral Testing': [
-    'Regardless of if your ME onset had a viral cause, like COVID, Epstein-Barr, Lyme, or Coxsackie, your initial infectio is often just the first domino to fall before additional viruses are reactivated due to a weakened immune system. Just like how \u201cLong COVID\u201d symptoms are not merely a continuation of acute COVID, reactivated viruses can exist without any of their acute symptom profile and generally can be indistinguishable, all contributing to fatigue, PEM, etc. Viral testing is recommended to give you targets for elimination.',
+    'Regardless of if your ME onset had a viral cause, like COVID, Epstein-Barr, Lyme, or Coxsackie, your initial infection is often just the first domino to fall before additional viruses are reactivated due to a weakened immune system. Just like how \u201cLong COVID\u201d symptoms are not merely a continuation of acute COVID, reactivated viruses can exist without any of their acute symptom profile and generally can be indistinguishable, all contributing to fatigue, PEM, etc. Viral testing is recommended to give you targets for elimination.',
     'In general, RNA-viruses in healthy individuals tend to have their IgG titres only elevated for a period of time after infection, and then begin to drop until there is no detection. On the other hand, people with a persistent infection of an RNA-virus will have their titres remain high. For example, having high titres on two tests for Coxsackie 6 months apart (or so) is a strong indicator of persistent infection  -  and even a single test showing high titres is still a strong indicator given you have not had the acute symptoms of said virus recently.',
     'On the other hand, DNA-viruses tend to have their IgG titres persist, albeit at reduced levels, for a very long time after initial infection (in healthy patients). This makes detecting them in serum more ambiguous  -  the levels being significantly elevated is a good metric. However, the specifics vary on a virus-to-virus basis.'
   ],
@@ -538,14 +543,32 @@ function buildChecklist() {
 
   // ── Lab access callout ──────────────────────────────────────────────────
   const calloutEl = document.createElement('div');
-  calloutEl.className = 'info-callout yellow';
+  calloutEl.className = 'guide-panel teal';
   calloutEl.innerHTML = `
-    <div class="info-callout-icon">&#9432;</div>
-    <div class="info-callout-body">
-      <div class="info-callout-title">In order to get all necessary bloodwork, you will need to go to a local outpatient blood center at a hospital <em>and</em> a LabCorp location.</div>
-      <p>The hospital outpatient lab handles sendouts to ARUP, Eurofins-Viracor, and Mayo Clinic Labs  -  tests that LabCorp does not offer. To find a hospital near you that does these sendouts, call ARUP\u2019s customer service at <strong>800-522-2787</strong> with your ZIP code and they will identify their nearest affiliated hospital. Then call that hospital\u2019s outpatient lab department directly and confirm whether they also send to Eurofins-Viracor and Mayo Clinic Labs.</p>
+    <div class="guide-panel-header" id="calloutHeader">
+      <h2>Where to get blood drawn</h2>
+      <span class="guide-toggle-btn" id="calloutToggleBtn">Collapse</span>
+    </div>
+    <div class="guide-body open" id="calloutBody">
+      <div class="guide-section">
+        <h3>In Person</h3>
+        <p>In order to get all necessary bloodwork in person, you will need to go to a local outpatient blood center at a hospital <em>and</em> a LabCorp location.</p>
+        <p>The hospital outpatient lab handles sendouts to ARUP, Eurofins-Viracor, and Mayo Clinic Labs - tests that LabCorp does not offer. To find a hospital near you that does these sendouts, call ARUP\u2019s customer service at <strong>800-522-2787</strong> with your ZIP code and they will identify their nearest affiliated hospital. To confirm, call that hospital\u2019s outpatient lab department directly and confirm whether they also send to Eurofins-Viracor and Mayo Clinic Labs.</p>
+      </div>
+      <div class="guide-section">
+        <h3>Mobile Phlebotomist</h3>
+        <p>Mobile phlebotomists are a good option if you\u2019d rather conserve your energy, but they have limitations - namely that they have a hard time with specialty draw kits that are outside LabCorp standards, and they may even charge much more for these.</p>
+        <p>If you\u2019re just doing LabCorp tests, <a href="https://app.getlabs.com/book?ref=labcorp" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">Getlabs</a> is their official partner and costs $79 at the cheapest (you\u2019ll pay more for tighter time windows). After the draw, they will handle the dropoff at LabCorp. <em>Note that the address you give to Getlabs must match the address that LabCorp has for you in their system, otherwise the matching will fail and you\u2019ll never get notified that your results are ready.</em></p>
+        <p>Otherwise, you can find a mobile phlebotomist in your area by searching Google Maps. Shop around, as the prices vary widely. $100 is generally considered a decent price. Make sure to call or email beforehand to ask if they can handle specialty lab kits.</p>
+      </div>
     </div>`;
   container.appendChild(calloutEl);
+  calloutEl.querySelector('#calloutHeader').addEventListener('click', () => {
+    const body = calloutEl.querySelector('#calloutBody');
+    const btn  = calloutEl.querySelector('#calloutToggleBtn');
+    body.classList.toggle('open');
+    btn.textContent = body.classList.contains('open') ? 'Collapse' : 'Expand';
+  });
 
   // Iterate sections in order of first appearance
   const uniqueSections = [...new Set(TESTS.map(t => t.section))];
