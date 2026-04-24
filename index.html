@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ME/CFS Test Guide & Generator</title>
+<title>ME/CFS Testing Guide</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f6f8; color: #1a1a2e; font-size: 14px; zoom: 1.4; }
@@ -12,10 +12,10 @@
   header h1 { font-size: 18px; font-weight: 600; letter-spacing: 0.3px; }
   .badge-count { background: #4f8ef7; color: #fff; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 700; min-width: 28px; text-align: center; }
 
-  .layout { display: flex; height: calc(100vh - 57px); overflow: hidden; }
+  .layout { display: flex; align-items: flex-start; padding: 24px 28px; gap: 20px; width: fit-content; margin: 0 auto; }
 
   /* ── Checklist ── */
-  .checklist { flex: 1 1 auto; overflow-y: auto; padding: 24px 28px; }
+  .checklist { width: 500px; flex-shrink: 0; }
   .category { margin-bottom: 24px; background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
   .category-header { display: flex; align-items: center; gap: 10px; padding: 13px 18px; background: #f0f4ff; border-bottom: 1px solid #e2e8f7; }
   .category-header h2 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #3a4a7a; flex: 1; }
@@ -38,25 +38,26 @@
   .tag-tbd { background: #fff8e1; color: #8a6600; }
 
   /* ── Sidebar ── */
-  .sidebar { width: 340px; flex-shrink: 0; background: #fff; border-left: 1px solid #e2e8f7; display: flex; flex-direction: column; }
-  .sidebar-inner { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 0; }
+  .sidebar { width: 200px; flex-shrink: 0; background: #f9fafc; border: 1px solid #e8ecf4; border-radius: 10px; display: none; flex-direction: column; position: sticky; top: 81px; align-self: flex-start; max-height: calc(100vh - 97px); overflow-y: auto; }
+  .sidebar.visible { display: flex; }
+  .sidebar-inner { padding: 10px; display: flex; flex-direction: column; gap: 0; }
 
-  .selected-summary { font-size: 13px; color: #4f8ef7; font-weight: 600; margin-bottom: 4px; }
-  .clear-all { font-size: 12px; color: #9ca3af; text-decoration: underline; cursor: pointer; display: inline-block; margin-bottom: 18px; }
+  .selected-summary { font-size: 11px; color: #4f8ef7; font-weight: 600; margin-bottom: 3px; }
+  .clear-all { font-size: 10px; color: #9ca3af; text-decoration: underline; cursor: pointer; display: inline-block; margin-bottom: 12px; }
   .clear-all:hover { color: #ef4444; }
 
-  .script-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-  .script-card { border-radius: 10px; padding: 14px 16px; }
+  .script-cards { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+  .script-card { border-radius: 8px; padding: 8px 10px; }
   .script-card.labcorp { background: #eef3ff; border: 1.5px solid #c7d9fb; }
   .script-card.hospital { background: #e8f5e9; border: 1.5px solid #a5d6a7; }
   .script-card-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
   .script-card.labcorp .script-card-title { color: #2952a3; }
   .script-card.hospital .script-card-title { color: #1b5e20; }
-  .script-card-count { font-size: 22px; font-weight: 700; line-height: 1; }
+  .script-card-count { font-size: 15px; font-weight: 700; line-height: 1; }
   .script-card.labcorp .script-card-count { color: #4f8ef7; }
   .script-card.hospital .script-card-count { color: #388e3c; }
-  .script-card-sub { font-size: 11px; color: #6b7280; margin-top: 2px; margin-bottom: 12px; }
-  .btn-print { width: 100%; padding: 10px; border: none; border-radius: 7px; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+  .script-card-sub { font-size: 10px; color: #6b7280; margin-top: 2px; margin-bottom: 8px; }
+  .btn-print { width: 100%; padding: 8px; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
   .btn-print:disabled { opacity: 0.4; cursor: default; }
   .btn-print.labcorp { background: #4f8ef7; color: #fff; }
   .btn-print.labcorp:not(:disabled):hover { background: #2f6fd4; }
@@ -69,6 +70,11 @@
   .guide-panel-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; background: #f5f0ff; border-bottom: 1px solid #e4d8fc; cursor: pointer; user-select: none; }
   .guide-panel-header h2 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #5b3ea6; }
   .guide-toggle-btn { font-size: 11px; color: #7c5cbf; font-weight: 600; white-space: nowrap; }
+  .guide-panel.teal .guide-panel-header { background: #eef6f5; border-bottom-color: #c4dedd; }
+  .guide-panel.teal .guide-panel-header h2 { color: #1a6b66; }
+  .guide-panel.teal .guide-toggle-btn { color: #2a8a84; }
+  .guide-panel.teal .guide-body { border-top-color: #c4dedd; }
+  .guide-panel.teal .guide-section h3 { color: #2a8a84; }
   .guide-body { display: none; padding: 18px; border-top: 1px solid #ede8fb; }
   .guide-body.open { display: block; }
   .guide-section { margin-bottom: 18px; }
@@ -85,6 +91,7 @@
   /* ── Info callouts ── */
   .info-callout { border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; display: flex; gap: 14px; align-items: flex-start; }
   .info-callout.red { background: #7f1d1d; border: 1.5px solid #991b1b; }
+  .info-callout.yellow { background: #1e2d52; border: 1.5px solid #2a3d6e; }
   .info-callout-icon { font-size: 18px; color: rgba(255,255,255,0.8); flex-shrink: 0; line-height: 1; margin-top: 1px; }
   .info-callout-body { flex: 1; }
   .info-callout-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #fff; margin-bottom: 5px; }
@@ -105,8 +112,7 @@
   .mobile-bar { display: none; }
 
   @media (max-width: 768px) {
-    .layout { flex-direction: column; height: auto; overflow: visible; }
-    .checklist { overflow-y: visible; padding: 16px 14px 90px; }
+    .layout { flex-direction: column; padding: 16px 14px 90px; }
     .sidebar { display: none; }
     .category { margin-bottom: 14px; }
     .test-row { padding: 11px 14px; }
@@ -137,11 +143,12 @@
 </style>
 </head>
 <body>
-
 <header>
-  <h1>ME/CFS Test Guide &amp; Generator</h1>
-  <span class="badge-count" id="globalCount">0</span>
-  <span style="font-size:12px;color:#9ab0d8;">tests selected</span>
+  <h1>ME/CFS Testing Guide</h1>
+  <span style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+    <span class="badge-count" id="globalCount">0</span>
+    <span style="font-size:12px;color:#9ab0d8;">tests selected</span>
+  </span>
 </header>
 
 <div class="layout">
@@ -156,13 +163,13 @@
         <div class="script-card labcorp">
           <div class="script-card-title">LabCorp Script</div>
           <div class="script-card-count" id="lcCount">0</div>
-          <div class="script-card-sub" id="lcSub">tests — in-house &amp; Eurofins send-outs</div>
+          <div class="script-card-sub" id="lcSub">in-house &amp; Eurofins send-outs</div>
           <button class="btn-print labcorp" id="btnLC" onclick="printScript('labcorp')" disabled>Print LabCorp Script (PDF)</button>
         </div>
         <div class="script-card hospital">
           <div class="script-card-title">Hospital Script</div>
           <div class="script-card-count" id="hospCount">0</div>
-          <div class="script-card-sub" id="hospSub">tests — ARUP, Mayo, Eurofins &amp; direct orders</div>
+          <div class="script-card-sub" id="hospSub">ARUP, Mayo, Eurofins &amp; direct orders</div>
           <button class="btn-print hospital" id="btnHosp" onclick="printScript('hospital')" disabled>Print Hospital Script (PDF)</button>
         </div>
       </div>
@@ -184,7 +191,7 @@
 
 <script>
 const TESTS = [
-  // ─── VIRAL TESTING — EBV ─────────────────────────────────────────────────
+  // ─── VIRAL TESTING  -  EBV ─────────────────────────────────────────────────
   { id:'ebv_pcr', name:'EBV Quantitative PCR', section:'Viral Testing', category:'Epstein-Barr Virus (EBV)', sny:null,
     description:'',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'Epstein-Barr Virus (EBV), Quantitative PCR\nCPT: 87799\nLabCorp Code: 138230' }] },
@@ -199,18 +206,18 @@ const TESTS = [
 
   { id:'ebv_insight', name:'EBV inSIGHT T Cell Immunity Testing', section:'Viral Testing', category:'Epstein-Barr Virus (EBV)', sny:true,
     description:'Measures stimulated ATP response to antigen-specific stimulation in CD4 & CD8 T cells.',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Send to Eurofins-Viracor \u2014 Eurofins Code: 33217\nCPT: 86352 x4\nInstructions: Collect 10 mL whole blood in sodium heparin tube (min 7.5 mL). Draw Mon\u2013Fri after 7:00 AM CST, ship same day priority overnight ambient. DO NOT SHIP if holiday within 2 days.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Send to Eurofins-Viracor  -  Eurofins Code: 33217\nCPT: 86352 x4\nInstructions: Collect 10 mL whole blood in sodium heparin tube (min 7.5 mL). Draw Mon\u2013Fri after 7:00 AM CST, ship same day priority overnight ambient. DO NOT SHIP if holiday within 2 days.' }] },
 
   { id:'ebv_naat', name:'EBV by Quantitative NAAT, Plasma', section:'Viral Testing', category:'Epstein-Barr Virus (EBV)', sny:true,
-    description:'Quantitative NAAT for EBV in plasma. Detects presence at any level \u2014 better than qualitative for low-level reactivation.',
+    description:'Quantitative NAAT for EBV in plasma. Detects presence at any level  -  better than qualitative for low-level reactivation.',
     routes:[{ id:'hospital_arup', label:'Hospital \u2192 ARUP', order:'SEND TO ARUP: EBV Quant NAAT, Plasma (3006079)\nCPT: 87799\nInstructions: Use Lavender (EDTA), Pink (K2EDTA), or PPT. Separate within 24 hours. Transfer 2 mL plasma to ARUP standard transport tube. Freeze immediately and send frozen.' }] },
 
-  // ─── VIRAL TESTING — HHV-6 ───────────────────────────────────────────────
+  // ─── VIRAL TESTING  -  HHV-6 ───────────────────────────────────────────────
   { id:'hhv6_ifa', name:'HHV-6 IgG, IFA', section:'Viral Testing', category:'HHV-6', sny:true,
     description:'1:80 or greater potentially indicative of HHV6 reactivation, with greater titres (1:160, 1:320 etc) most indicative. In a 1996 study of HHV-6 in CFS patients, 89% of the patients with IgG titers of 1:320 and above were found to have active infections by culture. (Wagner, Journal of Chronic Fatigue Syndrome)',
     routes:[{ id:'hospital_arup', label:'Hospital \u2192 ARUP', order:'SEND TO ARUP: HHV-6 IFA (2013423)\nCPT: 86790\nInstructions: Use SST or Plain Red. Transfer 0.5 mL serum to ARUP standard transport tube (Min: 0.1 mL). Refrigerate upon draw and send refrigerated.' }] },
 
-  // ─── VIRAL TESTING — CMV ─────────────────────────────────────────────────
+  // ─── VIRAL TESTING  -  CMV ─────────────────────────────────────────────────
   { id:'cmv_igg', name:'CMV IgG', section:'Viral Testing', category:'Cytomegalovirus (CMV)', sny:true,
     description:'',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'Cytomegalovirus IgG, Serum\nLabCorp Code: 006494' }] },
@@ -221,13 +228,13 @@ const TESTS = [
 
   { id:'cmv_cd8_mayo', name:'CMV CD8 T-Cell Immune Competence', section:'Viral Testing', category:'Cytomegalovirus (CMV)', sny:false,
     description:'',
-    routes:[{ id:'hospital_mayo', label:'Hospital \u2192 Mayo', order:'CMV CD8 T-Cell Immune Competence, Quantitative Assessment by Flow Cytometry, Blood\nCPT: 86356 x6; 86369; 86352 | Mayo Code: CMVC8 | Not SNY Approved\nSPECIAL: HLA Class 1 subtyping is a prerequisite. Special form must accompany test.\nInstructions: Green top (sodium heparin), collect 20 mL whole blood. Send in original tube \u2014 do not aliquot.' }] },
+    routes:[{ id:'hospital_mayo', label:'Hospital \u2192 Mayo', order:'CMV CD8 T-Cell Immune Competence, Quantitative Assessment by Flow Cytometry, Blood\nCPT: 86356 x6; 86369; 86352 | Mayo Code: CMVC8 | Not NY Approved\nSPECIAL: HLA Class 1 subtyping is a prerequisite. Special form must accompany test.\nInstructions: Green top (sodium heparin), collect 20 mL whole blood. Send in original tube  -  do not aliquot.' }] },
 
   { id:'cmv_insight', name:'CMV inSIGHT T Cell Immunity Testing', section:'Viral Testing', category:'Cytomegalovirus (CMV)', sny:true,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Send to Eurofins-Viracor \u2014 Eurofins Code: 30360\nCPT: 86352 x4\nInstructions: Collect 6 mL whole blood in sodium heparin tube (min 4.5 mL). Draw Mon\u2013Fri after 7:00 AM CST. Ship priority overnight ambient same day. DO NOT SHIP if holiday within 2 days.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Send to Eurofins-Viracor  -  Eurofins Code: 30360\nCPT: 86352 x4\nInstructions: Collect 6 mL whole blood in sodium heparin tube (min 4.5 mL). Draw Mon\u2013Fri after 7:00 AM CST. Ship priority overnight ambient same day. DO NOT SHIP if holiday within 2 days.' }] },
 
-  // ─── VIRAL TESTING — HSV ─────────────────────────────────────────────────
+  // ─── VIRAL TESTING  -  HSV ─────────────────────────────────────────────────
   { id:'hsv_pcr', name:'HSV 1 & 2 DNA PCR', section:'Viral Testing', category:'HSV 1 & 2', sny:null,
     description:'',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'HSV 1 & 2 DNA PCR\nLabCorp Code: 138651' }] },
@@ -236,7 +243,7 @@ const TESTS = [
     description:'',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'HSV 1 & 2 Specific Antibodies, IgG\nLabCorp Code: 164099' }] },
 
-  // ─── VIRAL TESTING — VZV ─────────────────────────────────────────────────
+  // ─── VIRAL TESTING  -  VZV ─────────────────────────────────────────────────
   { id:'vzv_pcr', name:'VZV DNA PCR', section:'Viral Testing', category:'Varicella Zoster Virus (VZV)', sny:null,
     description:'',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'VZV DNA PCR\nLabCorp Code: 138313' }] },
@@ -249,37 +256,37 @@ const TESTS = [
     description:'',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'VZV IgM, Qualitative\nLabCorp Code: 096776' }] },
 
-  // ─── VIRAL TESTING — ENTEROVIRUSES ───────────────────────────────────────
+  // ─── VIRAL TESTING  -  ENTEROVIRUSES ───────────────────────────────────────
   { id:'coxsackie_a', name:'Coxsackie A Antibodies', section:'Viral Testing', category:'Enteroviruses / Coxsackieviruses', sny:null,
     description:'',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'Coxsackie A Antibodies, Serum\nLabCorp Code: 163295' }] },
 
   { id:'coxsackie_b_neut', name:'Coxsackie B Antibodies, Neutralization', section:'Viral Testing', category:'Enteroviruses / Coxsackieviruses', sny:true,
-    description:'Test MUST be a neutralization. 1:160 or greater indicative of persistent Coxsackie B infection in ME individuals. Test is inclusive but not exclusive; Can test negative but still positive for stomach biopsy. Testing for twice with a space of 6 months in between and consecutively finding high titres additional good metric; these antibodies die off and should not be sticking around after an enterovirus infection is dealt with, so their continued presence means virus is still present.',
+    description:'This test MUST be a neutralization. Titers of 1:160 or greater indicate persistent Coxsackie B infection in individuals with ME. Note that this test is inclusive but not exclusive: you can test negative but might still positive for stomach biopsy. For additional assurance, test again with six months in between. If you still find high titers, it is more proof that you are positive as antibodies die off and should not sticking around after an enterovirus infection is dealt with.',
     routes:[{ id:'hospital_arup', label:'Hospital \u2192 ARUP', order:'SEND TO ARUP: Coxsackie Neutralization (0060055)\nCPT: 86658 x6\nInstructions: Use SST or Plain Red. Separate ASAP or within 2 hours. Transfer 1 mL serum to ARUP Standard Transport Tube (Min: 0.3 mL). Refrigerate upon draw and send refrigerated.' }] },
 
   { id:'echovirus_neut', name:'Echovirus Antibodies, Neutralization', section:'Viral Testing', category:'Enteroviruses / Coxsackieviruses', sny:true,
-    description:'Test MUST be a neutralization. 1:160 or greater indicative of persistent infection in ME individuals. Test is inclusive but not exclusive; Can test negative but still positive for stomach biopsy. Testing for twice with a space of 6 months in between and consecutively finding high titres additional good metric; I think suitable for concrete assumption. Key point is, these antibodies die off and should not be sticking around after an enterovirus infection is dealt with, so their continued presence means virus is still present.',
+    description:'The same description as the Coxsackie test also applies here.',
     routes:[{ id:'hospital_arup', label:'Hospital \u2192 ARUP', order:'SEND TO ARUP: Echovirus Neutralization (0060053)\nCPT: 86658 x5\nInstructions: Use SST or Plain Red. Separate ASAP or within 2 hours. Transfer 1 mL serum to ARUP Standard Transport Tube. Refrigerate upon draw and send refrigerated.' }] },
 
   // ─── NK CELL TESTING ──────────────────────────────────────────────────────
   { id:'nk_cd56', name:'NK Cell CD56+/CD3-', section:'NK Cell Testing', category:'NK Cell Testing', sny:null,
-    description:'Typical NK Cell Count test. Can be lower after onset, sometimes very low. Least specific NK cell test',
+    description:'Typical NK Cell Count test. Can be lower after onset, sometimes very low. This is the least specific NK cell test.',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'NK Cell CD56+/CD3-\nCPT: 86357\nLabCorp Code: 505016' }] },
 
   { id:'nk_function', name:'NK Cell Function, %', section:'NK Cell Testing', category:'NK Cell Testing', sny:true,
-    description:'Most holistic / best overall marker to see how your NK cells are doing. May be normal in earlier years of illness, but gradually decreases over time',
+    description:'This is the most holistic / best overall marker to see how your NK cells are doing. May be normal in earlier years of illness, but gradually decreases over time.',
     routes:[
-      { id:'labcorp_eurofins', label:'LabCorp \u2192 Eurofins', order:'NK Cell Function Assay STAT\nCPT: 88184; 88185 | LabCorp Code: 807502\nSend Out to 30035 @ Eurofins Viracor \u2014 MUST BE REFRIGERATED\nInstructions: Collect 20 mL whole blood in 2\u00d710 mL ACD tubes. Draw Mon\u2013Thu 11:00 AM\u20135:00 PM CT only. Ship same day priority overnight with cold packs.' },
+      { id:'labcorp_eurofins', label:'LabCorp \u2192 Eurofins', order:'NK Cell Function Assay STAT\nCPT: 88184; 88185 | LabCorp Code: 807502\nSend Out to 30035 @ Eurofins Viracor  -  MUST BE REFRIGERATED\nInstructions: Collect 20 mL whole blood in 2\u00d710 mL ACD tubes. Draw Mon\u2013Thu 11:00 AM\u20135:00 PM CT only. Ship same day priority overnight with cold packs.' },
     ] },
 
   { id:'nk_cd57', name:'NK Cell CD57+/CD3-', section:'NK Cell Testing', category:'NK Cell Testing', sny:false,
     description:'CD57+/CD3- NK cells are highly mature, differentiated, and cytotoxic. Decreased counts indicative of increased susceptibility to persistent infections/weakened immune system. In fact, pathogens are what is typically driving this count down. Potential indicator of a chronic lyme infection.',
-    routes:[{ id:'hospital_arup', label:'Hospital \u2192 ARUP', order:'SEND TO ARUP: NK Cell CD57 (2008912)\nCPT: 86356 x2 | Not SNY Approved\nInstructions: Use Lavender (EDTA), Pink (K2EDTA), or Green (sodium or lithium heparin). Collect 4 mL whole blood (Min: 0.5 mL). Analyze within 72 hours. Specimen acceptable ambient or refrigerated.' }] },
+    routes:[{ id:'hospital_arup', label:'Hospital \u2192 ARUP', order:'SEND TO ARUP: NK Cell CD57 (2008912)\nCPT: 86356 x2 | Not NY Approved\nInstructions: Use Lavender (EDTA), Pink (K2EDTA), or Green (sodium or lithium heparin). Collect 4 mL whole blood (Min: 0.5 mL). Analyze within 72 hours. Specimen acceptable ambient or refrigerated.' }] },
 
   // ─── T CELL TESTING ───────────────────────────────────────────────────────
   { id:'t_cd8_activation', name:'T Cell Activation Profile, CD8 Subsets', section:'T Cell Testing', category:'T Cell Testing', sny:null,
-    description:'HLA-DR CD8 T Cells are meant to proliferate in response to active infections. The LabCorp range for this test presents ZERO out of range results, you could have 0 of this and it would be \u201cin range\u201d (!!!). Therefore I would say anything less than a count of 25/uL and %<1 would be a cause for concern, especially when accompanied by significant ranges in viral titres in other tests (because this would be indicative of an inability of these cells to properly proliferate in response to current infection).',
+    description:'HLA-DR CD8 T Cells are meant to proliferate in response to active infections. The LabCorp range for this test presents ZERO out of range results, you could have 0 of this and it would be \u201cin range\u201d (!). because of this, anything less than a count of 25/uL and %<1 would be a cause for concern, especially when accompanied by significant ranges in viral titres in other tests (because this would be indicative of an inability of these cells to properly proliferate in response to current infection).',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'T Cell Activation Profile, CD8 Subsets\nCPT: 86356 x3; 86359; 86360\nLabCorp Code: 505750' }] },
 
   { id:'immuknow', name:'ImmuKnow', section:'T Cell Testing', category:'T Cell Testing', sny:null,
@@ -292,7 +299,7 @@ const TESTS = [
 
   { id:'t_phenotyping', name:'T Cell Phenotyping, Advanced', section:'T Cell Testing', category:'T Cell Testing', sny:false,
     description:'Very specific T cell subset test.',
-    routes:[{ id:'hospital_mayo', label:'Hospital \u2192 Mayo', order:'T Cell Phenotyping, Advanced\nCPT: 86356 x7 | Mayo Code: TCP | Not SNY Approved\nInstructions: Use Lavender top (EDTA), collect 3 mL whole blood. Send whole blood in original tube \u2014 do not aliquot. Ship ambient.' }] },
+    routes:[{ id:'hospital_mayo', label:'Hospital \u2192 Mayo', order:'T Cell Phenotyping, Advanced\nCPT: 86356 x7 | Mayo Code: TCP | Not NY Approved\nInstructions: Use Lavender top (EDTA), collect 3 mL whole blood. Send whole blood in original tube  -  do not aliquot. Ship ambient.' }] },
 
   { id:'reg_t_foxp3', name:'Regulatory T Cell Panel, FOXP3', section:'T Cell Testing', category:'T Cell Testing', sny:true,
     description:'Direct measurement of CD4+CD25+FoxP3+CD127 (Tregs). Elevated numbers play role in continued immune suppression, found in more immune exhausted states',
@@ -301,19 +308,19 @@ const TESTS = [
   // ─── PROTOZOAN TESTING ────────────────────────────────────────────────────
   { id:'babesia_fish', name:'Babesia FISH', section:'Protozoan Testing', category:'Protozoan Testing', sny:null,
     description:'Test looks for ribosomal RNA (evidence of active replication) in blood. Far more accurate and thorough than standard PCRs.',
-    routes:[{ id:'igenex', label:'IgeneX (direct)', order:'IgeneX \u2014 Babesia Fluorescent In Situ Hybridization Assay (FISH)\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit.' }] },
+    routes:[{ id:'igenex', label:'IgeneX (direct)', order:'IgeneX  -  Babesia Fluorescent In Situ Hybridization Assay (FISH)\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit.' }] },
 
   { id:'bartonella_fish', name:'Bartonella FISH', section:'Protozoan Testing', category:'Protozoan Testing', sny:null,
     description:'Same as above.',
-    routes:[{ id:'igenex', label:'IgeneX (direct)', order:'IgeneX \u2014 Bartonella Fluorescent In Situ Hybridization Assay (FISH)\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit.' }] },
+    routes:[{ id:'igenex', label:'IgeneX (direct)', order:'IgeneX  -  Bartonella Fluorescent In Situ Hybridization Assay (FISH)\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit.' }] },
 
   { id:'borrelia_elispot', name:'Borrelia Burgdorferi ELISpot', section:'Protozoan Testing', category:'Protozoan Testing', sny:null,
     description:'Measures T Cell IFN-gamma response to Borrelia Burgdorferi antigens; Borrelia T cell reactivity dies off quickly after antigen is no longer present in the body. Therefore, high reactivity / a positive result (according to IgeneX criteria) indicative of persistent antigen.',
-    routes:[{ id:'igenex', label:'IgeneX (direct)', order:'IgeneX \u2014 Borrelia Burgdorferi ELISpot\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit.' }] },
+    routes:[{ id:'igenex', label:'IgeneX (direct)', order:'IgeneX  -  Borrelia Burgdorferi ELISpot\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit.' }] },
 
   { id:'lyme_culture_pcr', name:'IgeneX Culture-Enhanced PCR', section:'Protozoan Testing', category:'Protozoan Testing', sny:null,
     description:'Comprehensive and extensive Lyme test testing for: Borrelias burgdorferi, garinii, mayonii & miyatomoi; Babesias microti, duncani, & sp. (miscellaneous); Bartonellas henselae, elizabethae, & tribocrum; Anaplasmas phagocytophilum & platys',
-    routes:[{ id:'igenex', label:'IgeneX (direct)', order:'IgeneX \u2014 Culture-Enhanced PCR (Comprehensive Lyme)\nTests: Borrelia burgdorferi/garinii/mayonii/miyatomoi; Babesia microti/duncani/sp.; Bartonella henselae/elizabethae/tribocorum; Anaplasma phagocytophilum/platys.\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit.' }] },
+    routes:[{ id:'igenex', label:'IgeneX (direct)', order:'IgeneX  -  Culture-Enhanced PCR (Comprehensive Lyme)\nTests: Borrelia burgdorferi/garinii/mayonii/miyatomoi; Babesia microti/duncani/sp.; Bartonella henselae/elizabethae/tribocorum; Anaplasma phagocytophilum/platys.\nPatient orders kit directly through IgeneX (igenex.com). Doctor\u2019s written order required.\nFollow collection instructions provided with the IgeneX kit.' }] },
 
   // ─── CYTOKINE TESTING ─────────────────────────────────────────────────────
   { id:'cytokine13_arup', name:'Cytokine Panel 13, Serum', section:'Cytokine Testing', category:'Cytokine Testing', sny:true,
@@ -326,19 +333,19 @@ const TESTS = [
 
   { id:'pro_inflammatory', name:'Pro-Inflammatory Panel', section:'Cytokine Testing', category:'Cytokine Testing', sny:true,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Pro-Inflammatory Panel, Plasma\nSend to Eurofins-Viracor \u2014 Eurofins Code: 403028P\nCPT: 83520 x3; 83529\nInstructions: Collect 4\u20135 mL whole blood in EDTA or ACD tube. Centrifuge and transfer 2 mL plasma to transfer tube. Freeze and ship on dry ice Mon\u2013Fri. Must arrive within 96 hours of collection.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Pro-Inflammatory Panel, Plasma\nSend to Eurofins-Viracor  -  Eurofins Code: 403028P\nCPT: 83520 x3; 83529\nInstructions: Collect 4\u20135 mL whole blood in EDTA or ACD tube. Centrifuge and transfer 2 mL plasma to transfer tube. Freeze and ship on dry ice Mon\u2013Fri. Must arrive within 96 hours of collection.' }] },
 
   { id:'th1_th2', name:'Th1/Th2 Panel', section:'Cytokine Testing', category:'Cytokine Testing', sny:true,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Th1 / Th2 Panel, Plasma\nSend to Eurofins-Viracor \u2014 Eurofins Code: 403026P\nCPT: 83520 x7\nInstructions: Collect 1 mL EDTA plasma. Ship frozen on dry ice overnight.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Th1 / Th2 Panel, Plasma\nSend to Eurofins-Viracor  -  Eurofins Code: 403026P\nCPT: 83520 x7\nInstructions: Collect 1 mL EDTA plasma. Ship frozen on dry ice overnight.' }] },
 
   { id:'soluble_tnf_r1', name:'Soluble TNF Receptor 1', section:'Cytokine Testing', category:'Cytokine Testing', sny:null,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Soluble TNF Receptor 1, Plasma\nSend to Eurofins-Viracor \u2014 Eurofins Code: 30145\nInstructions: Collect whole blood in sodium heparin tube. Separate plasma by centrifugation within 30 min of draw. Transfer 1 mL plasma to sterile tube and freeze immediately.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Soluble TNF Receptor 1, Plasma\nSend to Eurofins-Viracor  -  Eurofins Code: 30145\nInstructions: Collect whole blood in sodium heparin tube. Separate plasma by centrifugation within 30 min of draw. Transfer 1 mL plasma to sterile tube and freeze immediately.' }] },
 
   { id:'soluble_il2_r', name:'Soluble IL-2 Receptor', section:'Cytokine Testing', category:'Cytokine Testing', sny:null,
     description:'',
-    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Soluble IL-2 Receptor, Serum\nSend to Eurofins-Viracor \u2014 Eurofins Code: 30057\nInstructions: Collect 1 mL blood, allow to clot prior to centrifugation. Freeze specimen. Ship overnight on dry ice. Not stable ambient or refrigerated.' }] },
+    routes:[{ id:'hospital_eurofins', label:'Hospital \u2192 Eurofins (direct)', order:'Soluble IL-2 Receptor, Serum\nSend to Eurofins-Viracor  -  Eurofins Code: 30057\nInstructions: Collect 1 mL blood, allow to clot prior to centrifugation. Freeze specimen. Ship overnight on dry ice. Not stable ambient or refrigerated.' }] },
 
   { id:'tlr_function', name:'Toll-Like Receptor Function', section:'Cytokine Testing', category:'Cytokine Testing', sny:true,
     description:'Test with pre-stimulation & post-stimulation values for IL-1beta, IL-6, & TNF-a upon exposure to PAM3CSK4, Zymosan, Flagellin, CL097, & LPS.',
@@ -346,23 +353,23 @@ const TESTS = [
 
   // ─── SIGNALING MOLECULES ──────────────────────────────────────────────────
   { id:'mmp9', name:'MMP9', section:'Signaling Molecules', category:'Signaling Molecules', sny:null,
-    description:'Non-specific marker of inflammation correlated with vascular remodeling, weak connective tissue etc. According to Dr. Shoemaker range, 85-332 ng/mL is considered normal; above would be elevated.',
+    description:'Non-specific marker of inflammation correlated with vascular remodeling, weak connective tissue etc. According to Dr. Shoemaker\u2019s range, 85-332 ng/mL is considered normal; above would be elevated.',
     routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'MMP9\nCPT: 83520\nLabCorp Code: 500124' }] },
 
   { id:'vegf', name:'VEGF', section:'Signaling Molecules', category:'Signaling Molecules', sny:null,
-    description:'Marker of endothelial dysfunction. According to Dr. Shoemaker range, 31-86 pg/mL is considered normal; above would be elevated.',
-    routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'Vascular Endothelial Growth Factor (VEGF)\nLabCorp Code: TBD \u2014 confirm with LabCorp before ordering' }] },
+    description:'Marker of endothelial dysfunction. According to Dr. Shoemaker\u2019s range, 31-86 pg/mL is considered normal; above would be elevated.',
+    routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'Vascular Endothelial Growth Factor (VEGF)\nLabCorp Code: TBD  -  confirm with LabCorp before ordering' }] },
 
   { id:'pge2', name:'Prostaglandin E2 (PGE2)', section:'Signaling Molecules', category:'Signaling Molecules', sny:null,
     description:'Elevated PGE2 indicates a shift towards immune exhaustion, having immunosuppressive properties and decreasing ability to handle infections. 200-400 pg/mL considered normal; above would be elevated.',
     routes:[
-      { id:'hospital_arup_panlabs', label:'Hospital \u2192 ARUP \u2192 Pan Labs', order:'Prostaglandin E2 \u2014 Send out to ARUP FROZEN\nFOR ARUP: Send to Pan Labs, PGE2 Code 106\nInstructions: Collect 3 mL blood in Purple/Lavender (EDTA) tube. Freeze immediately after collection.' },
-      { id:'interscience', label:'InterScience Institute (direct)', order:'Prostaglandin E2, Serum/Plasma\nInterScience Institute \u2014 Code: PGE2 \u2014 Send to InterScience FROZEN\nInstructions: Collect 3 mL serum or EDTA plasma. Separate ASAP. Freeze immediately. Minimum specimen: 1 mL.' }
+      { id:'hospital_arup_panlabs', label:'Hospital \u2192 ARUP \u2192 Pan Labs', order:'Prostaglandin E2  -  Send out to ARUP FROZEN\nFOR ARUP: Send to Pan Labs, PGE2 Code 106\nInstructions: Collect 3 mL blood in Purple/Lavender (EDTA) tube. Freeze immediately after collection.' },
+      { id:'interscience', label:'InterScience Institute (direct)', order:'Prostaglandin E2, Serum/Plasma\nInterScience Institute  -  Code: PGE2  -  Send to InterScience FROZEN\nInstructions: Collect 3 mL serum or EDTA plasma. Separate ASAP. Freeze immediately. Minimum specimen: 1 mL.' }
     ] },
 
   { id:'vip', name:'Vasoactive Intestinal Peptide (VIP)', section:'Signaling Molecules', category:'Signaling Molecules', sny:false,
     description:'Also known as vasoactive intestinal polypeptide.',
-    routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'Vasoactive Intestinal Polypeptide (VIP), Plasma\nCPT: 84586\nLabCorp Code: 010397\nNot SNY Approved' }] },
+    routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'Vasoactive Intestinal Polypeptide (VIP), Plasma\nCPT: 84586\nLabCorp Code: 010397\nNot NY Approved' }] },
 
   { id:'c3a', name:'Complement C3a, Plasma, Frozen', section:'Signaling Molecules', category:'Signaling Molecules', sny:null,
     description:'',
@@ -387,7 +394,7 @@ const TESTS = [
   // ─── AUTOANTIBODY TESTING ─────────────────────────────────────────────────
   { id:'anticardiolipin', name:'Anti-Cardiolipin Antibodies', section:'Autoantibody Testing', category:'Autoantibody Testing', sny:null,
     description:'',
-    routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'Anti-Cardiolipin Antibodies\nLabCorp In-house \u2014 confirm specific panel code with LabCorp before ordering' }] },
+    routes:[{ id:'labcorp_inhouse', label:'LabCorp', order:'Anti-Cardiolipin Antibodies\nLabCorp In-house  -  confirm specific panel code with LabCorp before ordering' }] },
 
   // ─── METHYLATION TESTING ──────────────────────────────────────────────────
   { id:'b12_folate', name:'Vitamin B12 & Folate, Serum', section:'Methylation Testing', category:'Methylation Testing', sny:null,
@@ -411,14 +418,14 @@ const LABCORP_ROUTES  = ['labcorp_inhouse','labcorp_eurofins'];
 const HOSPITAL_ROUTES = ['hospital_arup','hospital_arup_panlabs','hospital_mayo','hospital_eurofins','igenex','interscience'];
 
 const ROUTE_LABELS = {
-  labcorp_inhouse:       'LabCorp \u2014 In-House',
+  labcorp_inhouse:       'LabCorp  -  In-House',
   labcorp_eurofins:      'LabCorp \u2192 Eurofins-Viracor (Send-Out)',
   hospital_arup:         'Local Hospital \u2192 ARUP Labs',
   hospital_arup_panlabs: 'Local Hospital \u2192 ARUP \u2192 Pan Labs',
   hospital_mayo:         'Local Hospital \u2192 Mayo Clinic Labs',
   hospital_eurofins:     'Local Hospital \u2192 Eurofins-Viracor (Direct)',
-  igenex:                'IgeneX \u2014 Patient Orders Kit Directly (Doctor\u2019s Order Required)',
-  interscience:          'InterScience Institute \u2014 Direct Order'
+  igenex:                'IgeneX  -  Patient Orders Kit Directly (Doctor\u2019s Order Required)',
+  interscience:          'InterScience Institute  -  Direct Order'
 };
 
 const SECTION_COLORS = {
@@ -434,29 +441,29 @@ const SECTION_COLORS = {
 
 const SECTION_INFO = {
   'Viral Testing': [
-    'People with ME may have an onset due to a COVID, Epstein-Barr, Lyme, or Coxsackie infection for example, but these initial infections are often only the first domino to fall before additional viruses are reactivated due to a weakened immune system. Just like how \u201cLong COVID\u201d symptoms are not just a continuation of acute COVID, reactivated viruses can exist without any of their acute symptom profile and generally can be indistinguishable, all contributing to fatigue, PEM, etc. Viral testing is recommended to give you targets for elimination.',
-    'In general, RNA-viruses in healthy individuals tend to have their IgG titres only elevated for a period of time after infection, and then begin to drop until there is no detection. On the other hand, people with a persistent infection of an RNA-virus will have their titres remain high. For example, having high titres on two tests for Coxsackie 6 months apart (or so) is a strong indicator of persistent infection \u2014 and even a single test showing high titres is still a strong indicator given you have not had the acute symptoms of said virus recently.',
-    'On the other hand, DNA-viruses tend to have their IgG titres persist, albeit at reduced levels, for a very long time after initial infection (in healthy patients). This makes detecting them in serum more ambiguous \u2014 the levels being significantly elevated is a good metric. However, the specifics vary on a virus-to-virus basis.'
+    'Regardless of if your ME onset had a viral cause, like COVID, Epstein-Barr, Lyme, or Coxsackie, your initial infection is often just the first domino to fall before additional viruses are reactivated due to a weakened immune system. Just like how \u201cLong COVID\u201d symptoms are not merely a continuation of acute COVID, reactivated viruses can exist without any of their acute symptom profile and generally can be indistinguishable, all contributing to fatigue, PEM, etc. Viral testing is recommended to give you targets for elimination.',
+    'In general, RNA-viruses in healthy individuals tend to have their IgG titres only elevated for a period of time after infection, and then begin to drop until there is no detection. On the other hand, people with a persistent infection of an RNA-virus will have their titres remain high. For example, having high titres on two tests for Coxsackie 6 months apart (or so) is a strong indicator of persistent infection  -  and even a single test showing high titres is still a strong indicator given you have not had the acute symptoms of said virus recently.',
+    'On the other hand, DNA-viruses tend to have their IgG titres persist, albeit at reduced levels, for a very long time after initial infection (in healthy patients). This makes detecting them in serum more ambiguous  -  the levels being significantly elevated is a good metric. However, the specifics vary on a virus-to-virus basis.'
   ],
   'NK Cell Testing': [
     'In ME/CFS, NK cells are often present in normal numbers but can be functionally impaired, so they can\u2019t kill viruses and other threats effectively.'
   ],
   'T Cell Testing': [
-    'T cell abnormalities can reveal chronic immune activation, where your immune system is stuck in an \u201calways on\u201d state without actually resolving anything.'
+    'T cell abnormalities can reveal chronic immune activation, where your immune system is stuck in an \u201calways-on\u201d state without actually resolving anything.'
   ],
   'Protozoan Testing': [
-    'Diagnostically, the 3 Bs fall into the same category as RNA-viruses like the SARS and Enterovirus families, because they too are meant to be fully cleared after infection \u2014 as opposed to DNA-viruses which will persist in latency.',
-    'In our condition, typical Lyme tests like Western Blot are not sufficient to give a conclusive result. Instead, the only generally reliable accessible tests in the USA are specific tests offered by the company Igenex; It is strongly recommended to get all tests listed here for the most absolute confirmation.'
+    'Diagnostically, the three Bs (Babesia, Borrelia, and Bartonella) fall into the same category as RNA-viruses, like the SARS and Enterovirus families, because they too are meant to be fully cleared after infection  -  as opposed to DNA-viruses which will persist in latency.',
+    'In ME, typical Lyme tests like Western Blot are not sufficient to give a conclusive result. Instead, the only generally reliable accessible tests in the USA are specific tests offered by the company Igenex. It is strongly recommended to get all tests listed here for absolute confirmation.'
   ],
   'Cytokine Testing': [
-    'Unfortunately, cytokine testing is the area in which US-based tests are the most limited. The best and most reliable cytokine tests are stimulated cytokine tests, in which your cells are exposed to antigen and the cytokine response is measured. These tests are only available in Germany \u2014 the only cytokine tests offered in the USA are whole blood tests where the unstimulated, raw quantity of a cytokine is measured in your blood. If these whole blood numbers are out of range, then it is absolutely an indication something is wrong; they are inclusive but not exclusive.',
-    'In many cases, however, someone could have a perfectly normal cytokine profile, but if they had gotten a stimulated cytokine test their response would be quite abnormal. However, you can use the overall results of the above T cell response to antigen tests and their results as a proxy, so the situation is not entirely bad. The best tests to measure stimulated immune response, therefore, are stimulated T cell and NK cell tests (as seen in the above sections). This does not mean I do not recommend cytokine testing, rather I mean it is important to understand these unfortunate limitations.'
+    'Unfortunately, cytokine testing is the area in which US-based tests are the most limited. The best and most reliable cytokine tests are stimulated cytokine tests, in which your cells are exposed to antigen and the cytokine response is measured. These tests are only available in Germany  -  the only cytokine tests offered in the USA are whole blood tests, where the unstimulated, raw quantity of a cytokine is measured in your blood. If these whole blood numbers are out of range, then it is absolutely an indication something is wrong; they are inclusive but not exclusive.',
+    'In many cases, however, someone could have a perfectly normal cytokine profile, but if they had gotten a stimulated cytokine test their response would be quite abnormal. However, you can use the overall results of the above T cell response to antigen tests and their results as a proxy, so the situation is not entirely bad. The best tests to measure stimulated immune response, therefore, are stimulated T cell and NK cell tests (as seen in the above sections). This does not mean we do not recommend cytokine testing, rather just that it is important to understand these unfortunate limitations.'
   ],
   'Signaling Molecules': [
-    'In addition to cytokines, there are other signaling molecules that you may find to be abnormal.'
+    'Signaling molecules, such as cytokines and chemokines, are central to immune communication, and abnormalities in these pathways are repeatedly observed in ME. Measuring them can reveal patterns of immune dysregulation, neuroinflammation, or persistent activation that may underlie symptoms.'
   ],
   'Autoantibody Testing': [
-    'Much like cytokine testing discussed previously, autoantibody testing in the United States is inferior to that offered in Europe (particularly Germany). A further obstruction is the fact that autoantibody quantities can be high with no correlation to symptoms, thus \u201cfunctional\u201d autoantibody testing is best to get a proper profile. However, there are certain antibodies whose presence alone is significant \u2014 just remember the limitations here out of a few select tests.'
+    'Much like cytokine testing, autoantibody testing in the United States is inferior to that offered in Europe (particularly Germany). A further obstruction is the fact that autoantibody quantities can be high with no correlation to symptoms, thus \u201cfunctional\u201d autoantibody testing is best to get a proper profile. However, there are certain antibodies whose presence alone is significant  -  just remember the limitations here.'
   ],
   'Methylation Testing': [
     'Methylation, in some shape or form, is impaired in practically everyone with ME. However, the specific ways in which it is affected can be different, with some having much more overt signs of deficiencies than others, such as vitamin B12/folate.',
@@ -469,31 +476,38 @@ const checked = new Set();
 // ── Guide content ─────────────────────────────────────────────────────────────
 const GUIDE_PREFACE = [
   {
-    title: 'Why this guide?',
+    title: '',
     paras: [
       'Stop if you\u2019ve heard these before: \u201cMy bloodwork came back normal!\u201d or \u201cThere are no biomarkers for this condition!\u201d',
-      'The most persistent myths in all of ME-land just won\u2019t go away, and understandably no: for the entire history of this condition, neither the vast majority of doctors nor the vast, vast majority of patients have had any idea how to run comprehensive testing that not only finds the source of their dysfunction, but gives them a picture with which they can target with more reliable treatments. Until now. This guide has been thoroughly researched and written to be a comprehensive reference for patients to document their ME-specific diagnostic abnormalities. It is a living document, and is continually updated as we become aware of new tests, or if testing information changes.',
-      'Note that this version contains testing information for the United States only. We encourage others to release their own guides for other regions, and we will help you draft the document. Please get in touch!'
+      'These persistent myths just won\u2019t go away, and it\u2019s understandable why: for the entire history of this condition, neither the vast majority of doctors nor the vast majority of patients have had any idea how to run comprehensive testing that not only finds the source of their dysfunction, but gives them a picture with which they can target with more reliable treatments.',
+      'Until now.',
+      'We\u2019ve thoroughly researched and written the ME/CFS Testing Guide to be a comprehensive reference for patients to document their ME-specific diagnostic abnormalities. It is a living document, and is continually updated as we become aware of new tests, or if testing information changes.'
     ]
   },
   {
-    title: 'A note on testing ranges:',
+    title: 'How to use this guide',
     paras: [
-      'Many commercial labs have testing ranges that are not clinically useful or accurate. For example <a href="https://www.survivingmold.com/Publications/MMP-9_Documentation_of_Worldwide_Levels_-_Final_-6-24-2021.pdf" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">this is a case study</a> on how the lab ranges for MMP9 at commercial labs are very wrong, and this same philosophy is also applicable to other tests.',
-      'Only through the resources of various clinicians, researchers, and patients, like Dr. Chia, Dr. Shoemaker, and the HHV6 Foundation, do we have these numbers, so credit must be given where credit is due.',
-      'For each test in this guide, the range specified takes this into account to provide the most useful and actionable interpretation of results. (If a testing range is not specified, use the standard range already established by the test.)'
+      'The guide splits up tests into sections by type. In the section header, we explain why we recommend each why each section is important, and the test descriptions give more color on why you may want to choose a certain test.',
+      'If a test looks interesting to you, checking the box next to it will add it to your test script. Once you\u2019re ready to print your test instructions, click on the <strong style="color:#2952a3">LabCorp</strong> or <strong style="color:#1b5e20">Hospital</strong> buttons to generate handy instructions you can give to your doctor and/or phlebotomist.'
     ]
   },
   {
     title: 'Insurance Coverage',
     paras: [
-      'All tests, outside of the ones under the miscellaneous section, should mostly be covered by the vast majority of insurance providers. If you want to be certain, go on your insurance\u2019s company\u2019s website and there should be a CPT code lookup tool, where you can get a price estimate. If this doesn\u2019t work, you can try submitting a list for member services to look up for you.'
+      'Outside of the ones under the miscellaneous section, the tests below should mostly be covered by the vast majority of insurance providers. For additional assurance, on your insurance\u2019s company\u2019s website and there should be a CPT code lookup tool where you can get a price estimate. If this doesn\u2019t work, you can try submitting a list for member services to look up for you.'
     ]
   },
   {
-    title: 'State of New York (SNY Approval)',
+    title: 'NY Approved',
     paras: [
-      'SNY approval is only relevant if your ordering physician is located in New York. It does not matter where you live or where the blood draw takes place \u2014 only where the doctor ordering the test is based. If your doctor is outside of New York, SNY approval status is irrelevant to you and can be ignored entirely.'
+      'New York State has decided, in its infinite wisdom, to impose uniquely strict approval requirements on testing, making a meaningful subset of tests in this guide unavailable to patients whose doctors are based in New York, regardless of where the patient lives or where their blood is drawn.',
+      'We\u2019ve denoted these throughout the guide as <span class="tag tag-sny">NY Approved</span> or <span class="tag tag-nosny">Not NY Approved</span>.'
+    ]
+  },
+  {
+    title: '',
+    paras: [
+      '<em>Note that this version contains testing information for the United States only. We encourage others to release their own guides for other regions - we will even help you draft the document. Please get in touch!</em>'
     ]
   }
 ];
@@ -509,13 +523,13 @@ function buildChecklist() {
   guideEl.className = 'guide-panel';
   guideEl.innerHTML = `
     <div class="guide-panel-header" id="guideHeader">
-      <h2>Guide &amp; Background</h2>
+      <h2>About The Guide</h2>
       <span class="guide-toggle-btn" id="guideToggleBtn">Collapse</span>
     </div>
     <div class="guide-body open" id="guideBody">
       ${GUIDE_PREFACE.map(s => `
         <div class="guide-section">
-          <h3>${s.title}</h3>
+          ${s.title ? `<h3>${s.title}</h3>` : ''}
           ${s.paras.map(p => `<p>${p}</p>`).join('')}
         </div>`).join('')}
     </div>`;
@@ -523,20 +537,38 @@ function buildChecklist() {
     const body = guideEl.querySelector('#guideBody');
     const btn  = guideEl.querySelector('#guideToggleBtn');
     body.classList.toggle('open');
-    btn.textContent = body.classList.contains('open') ? 'Collapse' : 'Read guide';
+    btn.textContent = body.classList.contains('open') ? 'Collapse' : 'Expand';
   });
   container.appendChild(guideEl);
 
   // ── Lab access callout ──────────────────────────────────────────────────
   const calloutEl = document.createElement('div');
-  calloutEl.className = 'info-callout red';
+  calloutEl.className = 'guide-panel teal';
   calloutEl.innerHTML = `
-    <div class="info-callout-icon">&#9432;</div>
-    <div class="info-callout-body">
-      <div class="info-callout-title">In order to get all necessary bloodwork, you will need to go to BOTH a local outpatient blood center at a hospital and LabCorp.</div>
-      <p>The hospital outpatient lab handles sendouts to ARUP, Eurofins-Viracor, and Mayo Clinic Labs \u2014 tests that LabCorp does not offer. To find a hospital near you that does these sendouts, call ARUP\u2019s customer service at <strong>800-522-2787</strong> with your ZIP code and they will identify their nearest affiliated hospital. Then call that hospital\u2019s outpatient lab department directly and confirm whether they also send to Eurofins-Viracor and Mayo Clinic Labs.</p>
+    <div class="guide-panel-header" id="calloutHeader">
+      <h2>Where to get blood drawn</h2>
+      <span class="guide-toggle-btn" id="calloutToggleBtn">Collapse</span>
+    </div>
+    <div class="guide-body open" id="calloutBody">
+      <div class="guide-section">
+        <h3>In Person</h3>
+        <p>In order to get all necessary bloodwork in person, you will need to go to a local outpatient blood center at a hospital <em>and</em> a LabCorp location.</p>
+        <p>The hospital outpatient lab handles sendouts to ARUP, Eurofins-Viracor, and Mayo Clinic Labs - tests that LabCorp does not offer. To find a hospital near you that does these sendouts, call ARUP\u2019s customer service at <strong>800-522-2787</strong> with your ZIP code and they will identify their nearest affiliated hospital. To confirm, call that hospital\u2019s outpatient lab department directly and confirm whether they also send to Eurofins-Viracor and Mayo Clinic Labs.</p>
+      </div>
+      <div class="guide-section">
+        <h3>Mobile Phlebotomist</h3>
+        <p>Mobile phlebotomists are a good option if you\u2019d rather conserve your energy, but they have limitations - namely that they have a hard time with specialty draw kits that are outside LabCorp standards, and they may even charge much more for these.</p>
+        <p>If you\u2019re just doing LabCorp tests, <a href="https://app.getlabs.com/book?ref=labcorp" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">Getlabs</a> is their official partner and costs $79 at the cheapest (you\u2019ll pay more for tighter time windows). After the draw, they will handle the dropoff at LabCorp. <em>Note that the address you give to Getlabs must match the address that LabCorp has for you in their system, otherwise the matching will fail and you\u2019ll never get notified that your results are ready.</em></p>
+        <p>Otherwise, you can find a mobile phlebotomist in your area by searching Google Maps. Shop around, as the prices vary widely. $100 is generally considered a decent price. Make sure to call or email beforehand to ask if they can handle specialty lab kits.</p>
+      </div>
     </div>`;
   container.appendChild(calloutEl);
+  calloutEl.querySelector('#calloutHeader').addEventListener('click', () => {
+    const body = calloutEl.querySelector('#calloutBody');
+    const btn  = calloutEl.querySelector('#calloutToggleBtn');
+    body.classList.toggle('open');
+    btn.textContent = body.classList.contains('open') ? 'Collapse' : 'Expand';
+  });
 
   // Iterate sections in order of first appearance
   const uniqueSections = [...new Set(TESTS.map(t => t.section))];
@@ -609,8 +641,8 @@ function buildChecklist() {
         row.dataset.id = test.id;
 
         let snyTag = '';
-        if (test.sny === true)  snyTag = `<span class="tag tag-sny">SNY Approved</span>`;
-        if (test.sny === false) snyTag = `<span class="tag tag-nosny">Not SNY Approved</span>`;
+        if (test.sny === true)  snyTag = `<span class="tag tag-sny">NY Approved</span>`;
+        if (test.sny === false) snyTag = `<span class="tag tag-nosny">Not NY Approved</span>`;
         const tbdTag = test.routes.some(r => r.order.includes('TBD')) ? `<span class="tag tag-tbd">Code TBD</span>` : '';
         const lcTags   = lcRoutes.length   ? lcRoutes.map(r => `<span class="tag tag-lab">${r.label}</span>`).join('') : '';
         const hospTags = hospRoutes.length ? hospRoutes.map(r => `<span class="tag tag-hosp">${r.label}</span>`).join('') : '';
@@ -676,10 +708,11 @@ function renderChecks() {
   });
 
   const n = checked.size;
+  document.querySelector('.sidebar').classList.toggle('visible', n > 0);
   document.getElementById('globalCount').textContent = n;
   document.getElementById('selectedSummary').textContent = n === 0 ? 'No tests selected' : `${n} test${n !== 1 ? 's' : ''} selected`;
-  document.getElementById('lcCount').textContent   = lcCount;
-  document.getElementById('hospCount').textContent = hospCount;
+  document.getElementById('lcCount').textContent   = lcCount + ' tests';
+  document.getElementById('hospCount').textContent = hospCount + ' tests';
   document.getElementById('btnLC').disabled   = lcCount === 0;
   document.getElementById('btnHosp').disabled = hospCount === 0;
 
@@ -730,7 +763,7 @@ function printScript(type) {
   }).join('');
 
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>Laboratory Order \u2014 ${isLC ? 'LabCorp' : 'Hospital'}</title>
+<title>Laboratory Order  -  ${isLC ? 'LabCorp' : 'Hospital'}</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #111; background: #fff; zoom: 1.4; }
@@ -798,7 +831,7 @@ function printScript(type) {
 <body>
 
 <div class="print-bar">
-  <button class="btn-back" onclick="window.close()">&#8592; Back</button>
+  <button class="btn-back" onclick="window.close()">&#8592; Back to Guide</button>
   <p>Laboratory Order &mdash; ${isLC ? 'LabCorp' : 'Local Hospital Outpatient Lab'}</p>
   <button class="btn-print-page" onclick="window.print()">Save as PDF / Print</button>
 </div>
@@ -819,6 +852,7 @@ function printScript(type) {
   <div class="two-col">
     <div class="col">
       <div class="col-title">Physician Information</div>
+      <div style="font-size:8px;color:#aaa;font-style:italic;margin-bottom:8px;margin-top:-4px;">To be completed by your doctor</div>
       <div class="field"><label>Physician Name</label><div class="line"></div></div>
       <div class="field"><label>NPI Number <span style="color:#c00;font-size:9px;">(Required)</span></label><div class="line"></div></div>
       <div class="field"><label>Practice / Clinic Name</label><div class="line"></div></div>
@@ -843,6 +877,7 @@ function printScript(type) {
     </div>
     <div class="col">
       <div class="col-title">Patient Information</div>
+      <div style="font-size:8px;color:#2952a3;font-style:italic;font-weight:600;margin-bottom:8px;margin-top:-4px;">⌨️ Fill this section in yourself</div>
       <div class="field"><label>Patient Full Legal Name</label><input type="text" placeholder="First Last"></div>
       <div class="half-row half-3">
         <div class="field"><label>Date of Birth</label><input type="text" placeholder="MM/DD/YYYY"></div>
@@ -866,7 +901,7 @@ function printScript(type) {
 </div>
 
 <div class="back-bar">
-  <button class="btn-back" onclick="window.close()">&#8592; Back to Generator</button>
+  <button class="btn-back" onclick="window.close()">&#8592; Back to Guide to Generator</button>
 </div>
 
 </body></html>`;
@@ -885,5 +920,8 @@ document.getElementById('clearAll').addEventListener('click', () => {
 buildChecklist();
 renderChecks();
 </script>
+<footer style="max-width: 500px; margin: 0 auto; padding: 24px 28px 32px; font-size: 11.5px; color: #6b7280; line-height: 1.65; border-top: 1px solid #e2e8f7;">
+  <p><strong>A note on testing ranges:</strong> Many commercial labs have testing ranges that are not clinically useful or accurate. For example <a href="https://www.survivingmold.com/Publications/MMP-9_Documentation_of_Worldwide_Levels_-_Final_-6-24-2021.pdf" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">this is a case study</a> on how the lab ranges for MMP9 at commercial labs are very wrong, and this same philosophy is also applicable to other tests. Only through the resources of various clinicians, researchers, and patients, like Dr. Chia, Dr. Shoemaker, and the HHV6 Foundation, do we have these numbers, so credit must be given where credit is due. For each test in this guide, the range specified takes this into account to provide the most useful and actionable interpretation of results. (If a testing range is not specified, use the standard range already established by the test.)</p>
+</footer>
 </body>
 </html>
